@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>穎利科技｜物品歸類判斷流程</title>
+<title>穎利科技｜品號類別判斷流程</title>
 <style>
 :root{
   --green:#7C9885; --green-deep:#5F7A68; --green-soft:#E8EFE9; --green-line:#C9D8CC;
@@ -15,10 +15,13 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--sand);color:var(--ink);font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;font-size:15px;line-height:1.8;padding:28px 16px 60px}
 .wrap{max-width:680px;margin:0 auto}
-.head{text-align:center;margin-bottom:30px}
+.head{text-align:center;margin-bottom:14px}
 .head .tag{display:inline-block;font-size:12px;letter-spacing:3px;color:var(--green-deep);background:var(--green-soft);border:1px solid var(--green-line);border-radius:20px;padding:4px 16px;margin-bottom:12px}
 .head h1{font-size:24px;font-weight:700;letter-spacing:2px;color:var(--ink)}
 .head p{font-size:13px;color:var(--ink2);margin-top:8px}
+
+.premise{background:#fff;border:1px dashed var(--green-line);border-radius:12px;padding:12px 18px;text-align:center;font-size:13.5px;color:var(--ink2);margin-bottom:30px}
+.premise b{color:var(--green-deep)}
 
 .q-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin-bottom:0;position:relative}
 .q-num{position:absolute;top:-14px;left:22px;background:var(--green);color:#fff;font-size:13px;font-weight:700;letter-spacing:1px;border-radius:20px;padding:3px 14px}
@@ -55,12 +58,12 @@ body{background:var(--sand);color:var(--ink);font-family:"Noto Sans TC","Microso
 .eg-card h2{font-size:15px;font-weight:700;color:var(--green-deep);letter-spacing:2px;margin-bottom:12px}
 .eg-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .eg-table th{text-align:left;color:var(--green-deep);font-weight:700;padding:6px 8px;border-bottom:1.5px solid var(--green-line);white-space:nowrap}
-.eg-table td{padding:8px;border-bottom:1px dashed var(--green-line);vertical-align:top;background:transparent}
+.eg-table td{padding:8px;border-bottom:1px dashed var(--green-line);vertical-align:top}
 .eg-table tr:last-child td{border-bottom:none}
-.pill{display:inline-block;font-size:12px;font-weight:700;border-radius:20px;padding:2px 12px;white-space:nowrap}
-.pill.g{background:#fff;color:var(--green-deep);border:1px solid var(--green-line)}
-.pill.a{background:#fff;color:#9C7F45;border:1px solid #E5D9BD}
-.pill.b{background:#fff;color:#5C7D8E;border:1px solid #CBDAE2}
+.pill{display:inline-block;font-size:12px;font-weight:700;border-radius:20px;padding:2px 12px;white-space:nowrap;background:#fff}
+.pill.g{color:var(--green-deep);border:1px solid var(--green-line)}
+.pill.a{color:#9C7F45;border:1px solid #E5D9BD}
+.pill.b{color:#5C7D8E;border:1px solid #CBDAE2}
 
 .foot{text-align:center;font-size:11.5px;color:var(--ink3);letter-spacing:1px;margin-top:36px}
 @media (max-width:520px){ .branch{flex-direction:column} .branch .b{min-width:0} }
@@ -70,26 +73,30 @@ body{background:var(--sand);color:var(--ink);font-family:"Noto Sans TC","Microso
 <div class="wrap">
 
   <div class="head">
-    <div class="tag">財 會 歸 類 指 南</div>
-    <h1>這個東西，該算什麼？</h1>
+    <div class="tag">建 品 號 · 類 別 判 斷</div>
+    <h1>這個品號，類別選哪個？</h1>
     <p>物料 · 耗材 · 辦公用品　兩個問題就分完</p>
+  </div>
+
+  <div class="premise">
+    大前提：<b>所有花錢買的東西都要建品號、都走領用單</b>——這張圖只解決一件事：類別欄該選誰。
   </div>
 
   <!-- Q1 -->
   <div class="q-card">
     <div class="q-num">第 1 題</div>
     <div class="q-title">它會「進到產品裡」嗎？</div>
-    <div class="q-sub">產品的一部分（原料、包材、瓶罐、貼標、外盒⋯），出貨時跟著產品走的，就是進 BOM。</div>
+    <div class="q-sub">產品的一部分（原料、瓶罐、貼標、外盒⋯），出貨時跟著產品走 ＝ 進 BOM。</div>
     <div class="branch">
       <div class="b bl">
         <div class="b-cond">會 → 進 BOM</div>
-        <div class="b-ans">物料</div>
-        <div class="b-note">要建品號、要管庫存。<br>請款屬性選「物料」或「原料」。</div>
+        <div class="b-ans">物料／原料</div>
+        <div class="b-note">成本跟著那張訂單算，<br>報價時算進料錢。</div>
       </div>
       <div class="b" style="background:#fff">
         <div class="b-cond" style="color:var(--ink2)">不會 → 用掉就沒了</div>
         <div class="b-ans" style="color:var(--ink)">往下看第 2 題</div>
-        <div class="b-note">手套、擦拭紙、夾鏈袋、文具⋯這類消耗品。</div>
+        <div class="b-note">手套、擦拭紙、夾鏈袋、文具⋯<br>這些都是「雜支」，只差類別。</div>
       </div>
     </div>
   </div>
@@ -99,23 +106,23 @@ body{background:var(--sand);color:var(--ink);font-family:"Noto Sans TC","Microso
   <!-- Q2 -->
   <div class="q-card">
     <div class="q-num">第 2 題</div>
-    <div class="q-title">主要是「誰」在消耗？</div>
+    <div class="q-title">主要是「誰」在領用？</div>
     <div class="q-sub">不用算比例、不用拆單——憑感覺答「大部分是誰在用」就好。</div>
     <div class="branch">
       <div class="b g">
         <div class="b-cond">產線／品檢為主</div>
         <div class="b-ans">耗材</div>
-        <div class="b-note">不建品號。<br>請款屬性選「耗材」。</div>
+        <div class="b-note">手套、擦拭紙、培養基、<br>粗鹽、吸油管⋯</div>
       </div>
       <div class="b a">
         <div class="b-cond">辦公室為主</div>
-        <div class="b-ans">其他費用</div>
-        <div class="b-note">文具、印章、影印⋯<br>請款屬性選「其他費用」。</div>
+        <div class="b-ans">辦公用品</div>
+        <div class="b-note">原子筆、影印紙、<br>印章、資料夾⋯</div>
       </div>
       <div class="b g">
         <div class="b-cond">五五開，分不出來</div>
-        <div class="b-ans">一律算耗材</div>
-        <div class="b-note">寧可算進生產成本，<br>報價保守一點永遠安全。</div>
+        <div class="b-ans">一律選耗材</div>
+        <div class="b-note">選定就不改，<br>下次同品項照舊。</div>
       </div>
     </div>
   </div>
@@ -126,7 +133,17 @@ body{background:var(--sand);color:var(--ink);font-family:"Noto Sans TC","Microso
     <ul>
       <li><b>不用拆單。</b>一包夾鏈袋產線用、辦公室也用？照第 2 題選一邊就好——追蹤它的功夫比它本身還貴。</li>
       <li><b>不用建兩個品號。</b>同一個東西只有一種身分，不因為兩邊都用就開兩個號。</li>
-      <li><b>不用回頭改。</b>當初選了就選了，下次照這張圖選對即可，歷史不用翻案。</li>
+      <li><b>不用回頭翻案。</b>當初選了就選了，同品項下次照舊，歷史不用改。</li>
+    </ul>
+  </div>
+
+  <!-- 錢的去向 -->
+  <div class="rule-card">
+    <h2>錢 最 後 去 哪 裡</h2>
+    <ul>
+      <li><b>物料／原料</b>：跟著訂單走，算進那張單的料錢。</li>
+      <li><b>耗材、辦公用品</b>：兩個都進<b>每月固定費用攤提</b>——類別分開只是為了看得清「產線消耗多少、辦公室消耗多少」，錢的終點是同一鍋。</li>
+      <li>所以類別選錯<b>不會讓成本算錯</b>，只會讓報表分類不漂亮——放輕鬆選。</li>
     </ul>
   </div>
 
@@ -134,11 +151,11 @@ body{background:var(--sand);color:var(--ink);font-family:"Noto Sans TC","Microso
   <div class="eg-card">
     <h2>常 見 範 例</h2>
     <table class="eg-table">
-      <tr><th>東西</th><th>想法</th><th>歸類</th></tr>
+      <tr><th>東西</th><th>想法</th><th>類別</th></tr>
       <tr><td>洗髮精瓶子、貼標、外盒</td><td>跟著產品出貨</td><td><span class="pill b">物料</span></td></tr>
       <tr><td>乳膠手套、擦拭紙、培養基</td><td>產線品檢用掉就沒</td><td><span class="pill g">耗材</span></td></tr>
-      <tr><td>夾鏈袋（兩邊都用）</td><td>分不出來 → 保守</td><td><span class="pill g">耗材</span></td></tr>
-      <tr><td>原子筆、影印紙、印章</td><td>辦公室消耗</td><td><span class="pill a">其他費用</span></td></tr>
+      <tr><td>夾鏈袋（兩邊都用）</td><td>分不出來 → 定一邊</td><td><span class="pill g">耗材</span></td></tr>
+      <tr><td>原子筆、影印紙、印章</td><td>辦公室領用為主</td><td><span class="pill a">辦公用品</span></td></tr>
       <tr><td>純水管線清洗用粗鹽</td><td>產線設備維護消耗</td><td><span class="pill g">耗材</span></td></tr>
     </table>
   </div>

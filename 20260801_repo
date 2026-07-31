@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>品號中心・防呆手冊｜穎利科技</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F6F4;
+  --ink:#16161A;
+  --winz:#E30613;
+  --winz-deep:#8F0009;
+  --slate:#6B6B75;
+  --rule:#DEDCD8;
+  --dark:#101014;
+  --ok:#1F7A4D;
+  --doing:#C8811A;
+  --tc:'Noto Sans TC','Microsoft JhengHei','PingFang TC',sans-serif;
+  --en:'Chakra Petch','Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--tc);
+  -webkit-font-smoothing:antialiased;line-height:1.75}
+.wrap{max-width:480px;margin:0 auto}
+section{padding:44px 22px}
+section.dark{background:var(--dark);color:#fff}
+
+/* ── 招牌：斜切紅塊 ── */
+.eyebrow{display:flex;align-items:center;gap:11px;margin-bottom:13px}
+.eyebrow .bar{width:30px;height:11px;background:var(--winz);transform:skewX(-18deg);flex:none}
+.eyebrow .tx{font-family:var(--en);font-weight:700;font-size:13px;letter-spacing:3.5px;
+  color:var(--winz);text-transform:uppercase}
+.dark .eyebrow .tx{color:#FF7A80}
+
+h1{font-size:38px;font-weight:900;letter-spacing:1px;line-height:1.2}
+h2{font-size:29px;font-weight:900;letter-spacing:.5px;line-height:1.3;margin-bottom:10px}
+.sub{font-size:16px;color:var(--slate);font-weight:500;line-height:1.75}
+.dark .sub{color:#9A9AA4}
+
+/* ── 封面 ── */
+.cover-mark{width:110px;height:9px;background:var(--winz);transform:skewX(-18deg);margin-bottom:34px}
+.cover-meta{margin-top:38px;display:flex;gap:34px;flex-wrap:wrap}
+.cover-meta div{font-family:var(--en);font-size:12px;letter-spacing:2px;color:#9A9AA4}
+.cover-meta b{display:block;font-family:var(--tc);font-size:18px;font-weight:700;
+  color:#fff;letter-spacing:.5px;margin-top:5px}
+
+/* ── 圖 ── */
+figure{margin:22px 0 0}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:13.5px;color:var(--slate);line-height:1.7;margin-top:11px;
+  padding-left:13px;border-left:3px solid var(--rule)}
+.dark figcaption{color:#9A9AA4;border-left-color:#2C2C34}
+
+/* ── 卡片 ── */
+.cards{display:grid;gap:13px;margin-top:22px}
+.card{background:#fff;border:2px solid var(--rule);border-radius:6px;padding:19px 20px}
+.dark .card{background:#1A1A20;border-color:#2C2C34}
+.card h3{font-size:19px;font-weight:900;margin-bottom:9px;display:flex;align-items:center;gap:10px}
+.card h3 i{width:8px;height:17px;background:var(--winz);transform:skewX(-18deg);flex:none;font-style:normal}
+.card p{font-size:15px;line-height:1.72;color:#3A3A42}
+.dark .card p{color:#B9B9C2}
+.card ul{list-style:none;font-size:15px;line-height:1.78;color:#3A3A42}
+.card li{padding-left:19px;position:relative}
+.card li::before{content:'';position:absolute;left:0;top:11px;width:8px;height:8px;
+  background:var(--winz);transform:skewX(-18deg)}
+
+/* ── 數字 ── */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:26px}
+.stat{background:#fff;border:2px solid var(--rule);border-radius:6px;padding:17px 8px 14px;
+  text-align:center;position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;width:100%;height:6px;background:var(--winz)}
+.stat .n{font-family:var(--en);font-size:38px;font-weight:700;line-height:1;letter-spacing:-1px}
+.stat .n i{font-style:normal;font-size:20px;color:var(--winz)}
+.stat .k{font-size:13px;font-weight:700;margin-top:7px;line-height:1.4}
+.stat .e{font-family:var(--en);font-size:9px;letter-spacing:1.5px;color:var(--slate);margin-top:2px}
+
+/* ── 攔截訊息 ── */
+.blocklist{margin-top:22px;border:2px solid var(--rule);border-radius:6px;background:#fff;overflow:hidden}
+.blocklist .bh{font-family:var(--en);font-size:11px;letter-spacing:3px;color:#fff;
+  background:var(--winz);padding:8px 16px;display:flex;justify-content:space-between}
+.bline{display:flex;gap:11px;align-items:flex-start;padding:12px 16px;font-size:14.5px;
+  line-height:1.6;border-bottom:1px solid #EFEDEA}
+.bline:last-child{border-bottom:0}
+.bline s{text-decoration:none;color:var(--winz);font-weight:900;flex:none;font-family:var(--en)}
+
+/* ── 條列強調 ── */
+.band{margin-top:20px;background:#FFF3F3;border-left:6px solid var(--winz);
+  padding:14px 17px;font-size:14.5px;line-height:1.75;color:var(--winz-deep)}
+.band b{color:var(--ink)}
+.dark .band{background:#241416;color:#FFB4B8}
+.dark .band b{color:#fff}
+
+/* ── 流程 ── */
+.flow{margin-top:22px;border:2px solid var(--rule);border-radius:6px;background:#fff;overflow:hidden}
+.step{display:flex;gap:13px;padding:15px 17px;align-items:flex-start}
+.step + .step{border-top:1px solid #EFEDEA}
+.step .k{font-family:var(--en);font-size:14px;font-weight:700;color:#fff;background:var(--winz);
+  width:30px;height:24px;display:flex;align-items:center;justify-content:center;
+  transform:skewX(-18deg);flex:none;margin-top:3px}
+.step .k span{transform:skewX(18deg)}
+.step .s-t{font-size:16px;font-weight:700;line-height:1.5}
+.step .s-d{font-size:14px;color:var(--slate);line-height:1.7;margin-top:3px}
+code{font-family:var(--en);font-size:14px;background:#F1EFEC;color:var(--winz-deep);
+  padding:1px 7px;border:1px solid var(--rule);font-weight:700}
+
+/* ── 待辦 ── */
+.own{font-family:var(--en);font-size:11px;letter-spacing:3px;color:var(--winz);
+  border-left:4px solid var(--winz);padding-left:10px;margin:24px 0 10px;line-height:1.5}
+.own.wait{color:var(--doing);border-left-color:var(--doing)}
+.todo{background:#fff;border:2px solid var(--rule);border-radius:6px;padding:6px 18px}
+.todo li{list-style:none;font-size:15px;line-height:1.65;padding:13px 0 13px 20px;
+  position:relative;border-bottom:1px dashed var(--rule);font-weight:500}
+.todo li:last-child{border-bottom:0}
+.todo li::before{content:'□';position:absolute;left:0;color:var(--doing);font-weight:700}
+.todo li em{font-style:normal;font-family:var(--en);font-size:11px;letter-spacing:1px;
+  color:var(--doing);border:1px solid #E8D5B4;background:#FDF8EF;padding:1px 7px;margin-left:5px;white-space:nowrap}
+.todo li span{display:block;font-size:13.5px;color:var(--slate);margin-top:2px;font-weight:400;line-height:1.6}
+
+/* ── 頁尾 ── */
+.foot{padding:34px 22px 52px;text-align:center;background:var(--dark)}
+.foot .sig{font-family:var(--en);font-size:11px;letter-spacing:3px;color:#6B6B75;line-height:2.3}
+.foot .sig b{color:#FF7A80;font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ═══ 封面 ═══ -->
+<section class="dark">
+  <div class="cover-mark"></div>
+  <h1>品號中心<br>防呆手冊</h1>
+  <p class="sub" style="margin-top:16px">系統會在什麼時候，<br>把錯誤攔下來。</p>
+  <div class="cover-meta">
+    <div>DATE<b>2026 / 08 / 01</b></div>
+    <div>BY<b>資訊部</b></div>
+  </div>
+</section>
+
+<!-- ═══ 為什麼要防呆 ═══ -->
+<section>
+  <div class="eyebrow"><span class="bar"></span><span class="tx">Why</span></div>
+  <h2>一個品號建錯，<br>後面全部跟著錯</h2>
+  <p class="sub">品號是所有單據的共同起點。它錯了，採購、庫存、配方、成本都會一起錯，而且往往幾個月後才被發現。</p>
+
+  <figure>
+    <svg viewBox="0 0 420 250" role="img" aria-label="品號錯誤會擴散到採購、庫存、配方、成本四個系統">
+      <rect x="140" y="14" width="140" height="46" fill="#E30613"/>
+      <text x="210" y="35" text-anchor="middle" fill="#fff" font-family="'Noto Sans TC',sans-serif" font-size="16" font-weight="900">品號建錯</text>
+      <text x="210" y="52" text-anchor="middle" fill="#FFC9CC" font-family="'Chakra Petch',sans-serif" font-size="10" letter-spacing="2">ONE MISTAKE</text>
+
+      <path d="M210 60 L210 84 M60 84 L360 84 M60 84 L60 108 M160 84 L160 108 M260 84 L260 108 M360 84 L360 108"
+            stroke="#DEDCD8" stroke-width="3" fill="none"/>
+
+      <g font-family="'Noto Sans TC',sans-serif" text-anchor="middle">
+        <rect x="14" y="108" width="92" height="58" fill="#fff" stroke="#DEDCD8" stroke-width="2"/>
+        <text x="60" y="134" fill="#16161A" font-size="14" font-weight="700">採購</text>
+        <text x="60" y="153" fill="#6B6B75" font-size="11">下錯料</text>
+
+        <rect x="114" y="108" width="92" height="58" fill="#fff" stroke="#DEDCD8" stroke-width="2"/>
+        <text x="160" y="134" fill="#16161A" font-size="14" font-weight="700">庫存</text>
+        <text x="160" y="153" fill="#6B6B75" font-size="11">帳實不符</text>
+
+        <rect x="214" y="108" width="92" height="58" fill="#fff" stroke="#DEDCD8" stroke-width="2"/>
+        <text x="260" y="134" fill="#16161A" font-size="14" font-weight="700">配方</text>
+        <text x="260" y="153" fill="#6B6B75" font-size="11">投錯料</text>
+
+        <rect x="314" y="108" width="92" height="58" fill="#fff" stroke="#DEDCD8" stroke-width="2"/>
+        <text x="360" y="134" fill="#16161A" font-size="14" font-weight="700">成本</text>
+        <text x="360" y="153" fill="#6B6B75" font-size="11">算錯價</text>
+      </g>
+
+      <path d="M210 176 L210 196" stroke="#DEDCD8" stroke-width="3"/>
+      <rect x="86" y="196" width="248" height="40" fill="#16161A"/>
+      <text x="210" y="222" text-anchor="middle" fill="#fff" font-family="'Noto Sans TC',sans-serif" font-size="15" font-weight="700">幾個月後才發現</text>
+    </svg>
+    <figcaption>所以防呆的位置，要放在最前面——建立的那一刻。</figcaption>
+  </figure>
+</section>
+
+<!-- ═══ 攔截實錄 ═══ -->
+<section class="dark">
+  <div class="eyebrow"><span class="bar"></span><span class="tx">Blocked</span></div>
+  <h2>系統真的會說的話</h2>
+  <p class="sub">以下不是設想的情境，是操作到一半會跳出來的訊息。</p>
+
+  <div class="blocklist" style="background:#1A1A20;border-color:#2C2C34">
+    <div class="bh"><span>攔截訊息・實錄</span><span>BLOCKED</span></div>
+    <div class="bline" style="border-bottom-color:#2C2C34;color:#E4E4E9"><s>✕</s><span>製令單尚未入庫，不可換碼</span></div>
+    <div class="bline" style="border-bottom-color:#2C2C34;color:#E4E4E9"><s>✕</s><span>這支品號已經換過碼了</span></div>
+    <div class="bline" style="border-bottom-color:#2C2C34;color:#E4E4E9"><s>✕</s><span>類別碼「27」不屬於這個型態的群組</span></div>
+    <div class="bline" style="border-bottom-color:#2C2C34;color:#E4E4E9"><s>✕</s><span>原料換碼必須填供應商與 INCI NAME</span></div>
+    <div class="bline" style="border-bottom-color:#2C2C34;color:#E4E4E9"><s>✕</s><span>新碼已存在，會蓋到別人</span></div>
+    <div class="bline" style="color:#E4E4E9"><s>✕</s><span>轉正順序錯誤，請先轉底下的打樣料</span></div>
+  </div>
+
+  <div class="band" style="margin-top:22px">
+    每一句訊息背後，都是<b>一次沒有發生的錯誤</b>。
+  </div>
+
+  <div class="stats">
+    <div class="stat" style="background:#1A1A20;border-color:#2C2C34">
+      <div class="n" style="color:#fff">41</div><div class="k" style="color:#E4E4E9">道防呆關卡</div><div class="e">GATES</div></div>
+    <div class="stat" style="background:#1A1A20;border-color:#2C2C34">
+      <div class="n" style="color:#fff">7.3<i>×</i></div><div class="k" style="color:#E4E4E9">操作變快</div><div class="e">FASTER</div></div>
+    <div class="stat" style="background:#1A1A20;border-color:#2C2C34">
+      <div class="n" style="color:#fff">2134</div><div class="k" style="color:#E4E4E9">支品號驗算</div><div class="e">VERIFIED</div></div>
+  </div>
+</section>
+
+<!-- ═══ 品號結構 ═══ -->
+<section>
+  <div class="eyebrow"><span class="bar"></span><span class="tx">Structure</span></div>
+  <h2>一支品號，<br>四段資訊</h2>
+  <p class="sub">每一段都有規則，系統會逐段檢查。</p>
+
+  <figure>
+    <svg viewBox="0 0 420 300" role="img" aria-label="品號八碼結構：型態一碼、類別兩碼、流水四碼、版本一碼">
+      <g font-family="'Chakra Petch',sans-serif" font-weight="700" text-anchor="middle">
+        <rect x="18" y="18" width="52" height="66" fill="#16161A"/>
+        <text x="44" y="62" fill="#fff" font-size="34">4</text>
+        <rect x="76" y="18" width="94" height="66" fill="#E30613"/>
+        <text x="123" y="62" fill="#fff" font-size="34">00</text>
+        <rect x="176" y="18" width="170" height="66" fill="#16161A"/>
+        <text x="261" y="62" fill="#fff" font-size="34">0012</text>
+        <rect x="352" y="18" width="50" height="66" fill="#E30613"/>
+        <text x="377" y="62" fill="#fff" font-size="34">A</text>
+      </g>
+
+      <g stroke="#DEDCD8" stroke-width="2" fill="none">
+        <path d="M44 90 L44 108"/><path d="M123 90 L123 108"/>
+        <path d="M261 90 L261 108"/><path d="M377 90 L377 138"/>
+      </g>
+
+      <g font-family="'Noto Sans TC',sans-serif" text-anchor="middle">
+        <text x="44" y="126" fill="#16161A" font-size="14" font-weight="700">型態</text>
+        <text x="44" y="145" fill="#6B6B75" font-size="11">半成品</text>
+        <text x="123" y="126" fill="#16161A" font-size="14" font-weight="700">類別</text>
+        <text x="123" y="145" fill="#6B6B75" font-size="11">液劑</text>
+        <text x="261" y="126" fill="#16161A" font-size="14" font-weight="700">流水碼</text>
+        <text x="261" y="145" fill="#6B6B75" font-size="11">系統自動給號</text>
+        <text x="377" y="156" fill="#16161A" font-size="14" font-weight="700">版本</text>
+      </g>
+
+      <line x1="18" y1="176" x2="402" y2="176" stroke="#DEDCD8" stroke-width="2"/>
+
+      <g font-family="'Noto Sans TC',sans-serif">
+        <rect x="18" y="192" width="384" height="44" fill="#fff" stroke="#DEDCD8" stroke-width="2"/>
+        <rect x="18" y="192" width="6" height="44" fill="#E30613"/>
+        <text x="38" y="212" fill="#16161A" font-size="13.5" font-weight="700">型態決定類別選單</text>
+        <text x="38" y="229" fill="#6B6B75" font-size="11.5">選了半成品，就只出得來液劑、乳劑、油劑、固型</text>
+
+        <rect x="18" y="244" width="384" height="44" fill="#fff" stroke="#DEDCD8" stroke-width="2"/>
+        <rect x="18" y="244" width="6" height="44" fill="#E30613"/>
+        <text x="38" y="264" fill="#16161A" font-size="13.5" font-weight="700">流水碼不讓人填</text>
+        <text x="38" y="281" fill="#6B6B75" font-size="11.5">系統發號並在寫入當下重算，兩人同時建也不會撞號</text>
+      </g>
+    </svg>
+    <figcaption>分類選錯，後面每一格都會跟著錯。所以規則寫進系統，不是寫在紙上。</figcaption>
+  </figure>
+</section>
+
+<!-- ═══ 建立品號的關卡 ═══ -->
+<section>
+  <div class="eyebrow"><span class="bar"></span><span class="tx">Gate 01　Create</span></div>
+  <h2>建立品號：<br>十六道關卡</h2>
+  <p class="sub">按下「建立」之前，要通過這些檢查。任何一關沒過，按鈕不會亮。</p>
+
+  <figure>
+    <svg viewBox="0 0 420 336" role="img" aria-label="建立品號的五道檢查關卡，全部通過才能寫入">
+      <g font-family="'Noto Sans TC',sans-serif">
+        <rect x="18" y="10" width="384" height="44" fill="#fff" stroke="#DEDCD8" stroke-width="2"/>
+        <rect x="18" y="10" width="7" height="44" fill="#E30613"/>
+        <text x="40" y="30" font-size="14" font-weight="700" fill="#16161A">分類選了嗎</text>
+        <text x="40" y="46" font-size="11.5" fill="#6B6B75">沒選型態，類別下拉是鎖住的</text>
+        <text x="384" y="38" font-size="17" fill="#E30613" text-anchor="end" font-weight="700">✕</text>
+
+        <rect x="18" y="62" width="384" height="44" fill="#fff" stroke="#DEDCD8" stroke-width="2"/>
+        <rect x="18" y="62" width="7" height="44" fill="#E30613"/>
+        <text x="40" y="82" font-size="14" font-weight="700" fill="#16161A">品名格式對嗎</text>
+        <text x="40" y="98" font-size="11.5" fill="#6B6B75">依分類自動切換要填幾格，不用背規則</text>
+        <text x="384" y="90" font-size="17" fill="#E30613" text-anchor="end" font-weight="700">✕</text>
+
+        <rect x="18" y="114" width="384" height="44" fill="#fff" stroke="#DEDCD8" stroke-width="2"/>
+        <rect x="18" y="114" width="7" height="44" fill="#E30613"/>
+        <text x="40" y="134" font-size="14" font-weight="700" fill="#16161A">原料的 INCI 填了嗎</text>
+        <text x="40" y="150" font-size="11.5" fill="#6B6B75">法規會用到的成分名，不留到事後補</text>
+        <text x="384" y="142" font-size="17" fill="#E30613" text-anchor="end" font-weight="700">✕</text>
+
+        <rect x="18" y="166" width="384" height="44" fill="#fff" stroke="#DEDCD8" stroke-width="2"/>
+        <rect x="18" y="166" width="7" height="44" fill="#1F7A4D"/>
+        <text x="40" y="186" font-size="14" font-weight="700" fill="#16161A">換算係數自動算</text>
+        <text x="40" y="202" font-size="11.5" fill="#6B6B75">詢價單位＝固定單位時直接鎖成 1，不必人算</text>
+        <text x="384" y="194" font-size="17" fill="#1F7A4D" text-anchor="end" font-weight="700">✓</text>
+
+        <rect x="18" y="218" width="384" height="44" fill="#fff" stroke="#DEDCD8" stroke-width="2"/>
+        <rect x="18" y="218" width="7" height="44" fill="#1F7A4D"/>
+        <text x="40" y="238" font-size="14" font-weight="700" fill="#16161A">用不到的欄位自動隱藏</text>
+        <text x="40" y="254" font-size="11.5" fill="#6B6B75">半成品沒有出貨規格，那一格就不出現</text>
+        <text x="384" y="246" font-size="17" fill="#1F7A4D" text-anchor="end" font-weight="700">✓</text>
+
+        <path d="M210 268 L210 284" stroke="#DEDCD8" stroke-width="3"/>
+        <rect x="112" y="284" width="196" height="42" fill="#16161A"/>
+        <text x="210" y="311" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">全部通過才能建立</text>
+      </g>
+    </svg>
+    <figcaption>紅色是會擋人的，綠色是系統自己幫忙做掉的。</figcaption>
+  </figure>
+
+  <div class="band">
+    <b>兩個人同時建品號也不會撞號</b> —— 寫入時上鎖，並在鎖裡重新計算流水碼，不採用畫面上的預覽號。
+  </div>
+</section>
+
+<!-- ═══ 換碼 ═══ -->
+<section>
+  <div class="eyebrow"><span class="bar"></span><span class="tx">Gate 02　Migration</span></div>
+  <h2>換碼：<br>先預覽，才寫入</h2>
+  <p class="sub">換碼會同時改動品號總表、配方表與庫存，而且沒有一鍵復原。所以流程刻意分成四步。</p>
+
+  <figure>
+    <svg viewBox="0 0 420 260" role="img" aria-label="換碼四步驟：輸入舊碼、攤開影響範圍、預覽對照、確認寫入">
+      <g font-family="'Noto Sans TC',sans-serif">
+        <rect x="18" y="12" width="384" height="50" fill="#fff" stroke="#DEDCD8" stroke-width="2"/>
+        <path d="M18 12 h30 v50 h-30 z" fill="#16161A"/>
+        <text x="33" y="43" text-anchor="middle" fill="#fff" font-family="'Chakra Petch',sans-serif" font-size="17" font-weight="700">1</text>
+        <text x="62" y="34" font-size="15" font-weight="700" fill="#16161A">輸入舊品號</text>
+        <text x="62" y="52" font-size="11.5" fill="#6B6B75">系統去所有系統裡找它被誰用到</text>
+
+        <path d="M210 62 L210 74" stroke="#DEDCD8" stroke-width="3"/>
+
+        <rect x="18" y="74" width="384" height="50" fill="#fff" stroke="#DEDCD8" stroke-width="2"/>
+        <path d="M18 74 h30 v50 h-30 z" fill="#16161A"/>
+        <text x="33" y="105" text-anchor="middle" fill="#fff" font-family="'Chakra Petch',sans-serif" font-size="17" font-weight="700">2</text>
+        <text x="62" y="96" font-size="15" font-weight="700" fill="#16161A">攤開影響範圍</text>
+        <text x="62" y="114" font-size="11.5" fill="#6B6B75">配方幾處、庫存幾列、製令幾張，全部列出來</text>
+
+        <path d="M210 124 L210 136" stroke="#DEDCD8" stroke-width="3"/>
+
+        <rect x="18" y="136" width="384" height="50" fill="#fff" stroke="#DEDCD8" stroke-width="2"/>
+        <path d="M18 136 h30 v50 h-30 z" fill="#16161A"/>
+        <text x="33" y="167" text-anchor="middle" fill="#fff" font-family="'Chakra Petch',sans-serif" font-size="17" font-weight="700">3</text>
+        <text x="62" y="158" font-size="15" font-weight="700" fill="#16161A">預覽新舊對照</text>
+        <text x="62" y="176" font-size="11.5" fill="#6B6B75">只計算、不寫入。看清楚才往下走</text>
+
+        <path d="M210 186 L210 198" stroke="#DEDCD8" stroke-width="3"/>
+
+        <rect x="18" y="198" width="384" height="50" fill="#E30613"/>
+        <path d="M18 198 h30 v50 h-30 z" fill="#8F0009"/>
+        <text x="33" y="229" text-anchor="middle" fill="#fff" font-family="'Chakra Petch',sans-serif" font-size="17" font-weight="700">4</text>
+        <text x="62" y="220" font-size="15" font-weight="700" fill="#fff">確認寫入</text>
+        <text x="62" y="238" font-size="11.5" fill="#FFC9CC">再問一次才動手，並留下完整異動紀錄</text>
+      </g>
+    </svg>
+    <figcaption>前三步都可以退回重來，只有第四步會真的動到資料。</figcaption>
+  </figure>
+
+  <div class="cards">
+    <div class="card">
+      <h3><i></i>擋下來的情況</h3>
+      <ul>
+        <li>製令還沒入庫 —— 生產中的單據正在用它</li>
+        <li>這支已經換過碼 —— 履歷不會被覆蓋</li>
+        <li>新碼會撞到別人 —— 指名撞到誰</li>
+        <li>舊制的類別碼 —— 強制重新分類</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><i></i>不會弄壞的東西</h3>
+      <p>同一支的所有版本一起換，不漏版本。<b>舊品號永久保留</b>，日後查得到它以前叫什麼。</p>
+      <p style="margin-top:12px">配方表與庫存的品名是公式，換完會自己更新 —— 系統刻意不去覆寫，避免把公式砸壞。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 速度 ═══ -->
+<section>
+  <div class="eyebrow"><span class="bar"></span><span class="tx">Speed</span></div>
+  <h2>慢，本身就是風險</h2>
+  <p class="sub">畫面轉太久，人會失去耐心開始亂按。所以速度也算防呆的一環。</p>
+
+  <figure>
+    <svg viewBox="0 0 420 168" role="img" aria-label="換碼預覽從 6386 毫秒縮短到 870 毫秒">
+      <text x="18" y="26" font-family="'Noto Sans TC',sans-serif" font-size="13" font-weight="700" fill="#6B6B75">改善前</text>
+      <rect x="18" y="36" width="384" height="34" fill="#B8B6B1"/>
+      <text x="390" y="59" text-anchor="end" font-family="'Chakra Petch',sans-serif" font-size="17" font-weight="700" fill="#fff">6386 ms</text>
+
+      <text x="18" y="106" font-family="'Noto Sans TC',sans-serif" font-size="13" font-weight="700" fill="#16161A">改善後</text>
+      <rect x="18" y="116" width="384" height="34" fill="#E7E5E1"/>
+      <rect x="18" y="116" width="52" height="34" fill="#E30613"/>
+      <text x="82" y="139" font-family="'Chakra Petch',sans-serif" font-size="17" font-weight="700" fill="#E30613">870 ms</text>
+      <text x="390" y="139" text-anchor="end" font-family="'Noto Sans TC',sans-serif" font-size="13" font-weight="700" fill="#6B6B75">快 7.3 倍</text>
+    </svg>
+    <figcaption>做法：重複讀取的資料只讀一次、只讀需要的那幾列、預覽走索引。真正寫入時仍然完整重算，正確性不打折。</figcaption>
+  </figure>
+</section>
+
+<!-- ═══ 打樣制度 ═══ -->
+<section class="dark">
+  <div class="eyebrow"><span class="bar"></span><span class="tx">Sampling</span></div>
+  <h2>打樣制度</h2>
+  <p class="sub">依 7/29 會議決議「完整留配方」。打樣不佔用正式品號，配方從第一版就存進系統。</p>
+
+  <figure>
+    <svg viewBox="0 0 420 214" role="img" aria-label="打樣虛擬品號經過改版後轉為正式品號">
+      <g font-family="'Chakra Petch',sans-serif" font-weight="700">
+        <rect x="14" y="30" width="132" height="52" fill="#1A1A20" stroke="#4A4A56" stroke-width="2" stroke-dasharray="6 4"/>
+        <text x="80" y="55" text-anchor="middle" fill="#fff" font-size="19">X010001A</text>
+        <text x="80" y="72" text-anchor="middle" fill="#9A9AA4" font-family="'Noto Sans TC',sans-serif" font-size="11" font-weight="400">打樣・虛擬品號</text>
+
+        <path d="M150 56 L156 56" stroke="#4A4A56" stroke-width="2"/>
+
+        <rect x="160" y="30" width="86" height="52" fill="#1A1A20" stroke="#4A4A56" stroke-width="2" stroke-dasharray="6 4"/>
+        <text x="203" y="55" text-anchor="middle" fill="#fff" font-size="19">…B</text>
+        <text x="203" y="72" text-anchor="middle" fill="#9A9AA4" font-family="'Noto Sans TC',sans-serif" font-size="11" font-weight="400">客戶要改</text>
+
+        <path d="M250 56 L268 56" stroke="#E30613" stroke-width="3"/>
+        <path d="M262 50 l8 6 -8 6" fill="#E30613"/>
+
+        <rect x="274" y="30" width="132" height="52" fill="#E30613"/>
+        <text x="340" y="55" text-anchor="middle" fill="#fff" font-size="19">4000012A</text>
+        <text x="340" y="72" text-anchor="middle" fill="#FFC9CC" font-family="'Noto Sans TC',sans-serif" font-size="11" font-weight="400">正式・半成品</text>
+      </g>
+
+      <g font-family="'Noto Sans TC',sans-serif">
+        <rect x="14" y="104" width="392" height="44" fill="#1A1A20" stroke="#2C2C34" stroke-width="2"/>
+        <rect x="14" y="104" width="6" height="44" fill="#1F7A4D"/>
+        <text x="34" y="124" fill="#fff" font-size="13.5" font-weight="700">改過幾版就轉幾版</text>
+        <text x="34" y="141" fill="#9A9AA4" font-size="11.5">客戶回頭要求重打上次那版，配方調得出來</text>
+
+        <rect x="14" y="156" width="392" height="44" fill="#1A1A20" stroke="#2C2C34" stroke-width="2"/>
+        <rect x="14" y="156" width="6" height="44" fill="#1F7A4D"/>
+        <text x="34" y="176" fill="#fff" font-size="13.5" font-weight="700">來歷自動留存</text>
+        <text x="34" y="193" fill="#9A9AA4" font-size="11.5">從正式品號查得到當初是哪一次打樣、為哪個客戶做的</text>
+      </g>
+    </svg>
+    <figcaption>虛擬品號用完即釋出，不佔用正式編號的空間。</figcaption>
+  </figure>
+
+  <div class="flow" style="background:#1A1A20;border-color:#2C2C34">
+    <div class="step"><span class="k"><span>01</span></span><div>
+      <div class="s-t" style="color:#fff">研發開打樣單</div>
+      <div class="s-d" style="color:#9A9AA4">系統給一組虛擬品號，不佔用正式編號</div></div></div>
+    <div class="step" style="border-top-color:#2C2C34"><span class="k"><span>02</span></span><div>
+      <div class="s-t" style="color:#fff">配方登進系統</div>
+      <div class="s-d" style="color:#9A9AA4">這就是「完整留配方」的落實點</div></div></div>
+    <div class="step" style="border-top-color:#2C2C34"><span class="k"><span>03</span></span><div>
+      <div class="s-t" style="color:#fff">客戶要求調整</div>
+      <div class="s-d" style="color:#9A9AA4">跳下一版本，舊版一版都不刪</div></div></div>
+    <div class="step" style="border-top-color:#2C2C34"><span class="k"><span>04</span></span><div>
+      <div class="s-t" style="color:#fff">客戶下單，一鍵轉正</div>
+      <div class="s-d" style="color:#9A9AA4">配方自動跟著轉，來歷同時留存</div></div></div>
+  </div>
+
+  <div class="band" style="margin-top:20px">
+    <b>轉正順序防呆</b> —— 成品的配方裡如果還掛著打樣料，系統會擋住並指名：請先轉底下那幾支。<br>
+    由內往外轉，不會留下半虛半實的配方。
+  </div>
+</section>
+
+<!-- ═══ 地基 ═══ -->
+<section>
+  <div class="eyebrow"><span class="bar"></span><span class="tx">Foundation</span></div>
+  <h2>看不見的地基</h2>
+  <p class="sub">這一段沒有畫面，但它決定了以上四十道關卡，會不會在某一天無聲失效。</p>
+
+  <figure>
+    <svg viewBox="0 0 420 196" role="img" aria-label="欄位定位方式從認位置改成認名稱">
+      <g font-family="'Noto Sans TC',sans-serif">
+        <text x="18" y="20" font-size="13" font-weight="700" fill="#6B6B75">以前：程式記「第幾欄」</text>
+        <g font-family="'Chakra Petch',sans-serif" font-size="13" font-weight="700" text-anchor="middle">
+          <rect x="18" y="30" width="70" height="34" fill="#fff" stroke="#DEDCD8" stroke-width="2"/><text x="53" y="52" fill="#6B6B75">7</text>
+          <rect x="92" y="30" width="70" height="34" fill="#fff" stroke="#DEDCD8" stroke-width="2"/><text x="127" y="52" fill="#6B6B75">8</text>
+          <rect x="166" y="30" width="70" height="34" fill="#E30613"/><text x="201" y="52" fill="#fff">9</text>
+          <rect x="240" y="30" width="70" height="34" fill="#fff" stroke="#DEDCD8" stroke-width="2"/><text x="275" y="52" fill="#6B6B75">10</text>
+        </g>
+        <text x="322" y="45" font-size="11.5" fill="#6B6B75">插一欄</text>
+        <text x="322" y="61" font-size="11.5" fill="#E30613" font-weight="700">全部錯位</text>
+
+        <line x1="18" y1="88" x2="402" y2="88" stroke="#DEDCD8" stroke-width="2"/>
+
+        <text x="18" y="112" font-size="13" font-weight="700" fill="#16161A">現在：程式記「欄位名稱」</text>
+        <g font-size="12" font-weight="700" text-anchor="middle">
+          <rect x="18" y="122" width="84" height="34" fill="#fff" stroke="#DEDCD8" stroke-width="2"/><text x="60" y="144" fill="#6B6B75">屬性</text>
+          <rect x="106" y="122" width="104" height="34" fill="#1F7A4D"/><text x="158" y="144" fill="#fff">中文品名</text>
+          <rect x="214" y="122" width="84" height="34" fill="#fff" stroke="#DEDCD8" stroke-width="2"/><text x="256" y="144" fill="#6B6B75">單位</text>
+          <rect x="302" y="122" width="84" height="34" fill="#fff" stroke="#DEDCD8" stroke-width="2"/><text x="344" y="144" fill="#6B6B75">成本</text>
+        </g>
+        <text x="18" y="182" font-size="12" fill="#1F7A4D" font-weight="700">欄位怎麼搬動都對得到，查不到就當場停止，不會靜靜寫錯格</text>
+      </g>
+    </svg>
+    <figcaption>表格調整是遲早的事。以前調一次就可能默默寫錯資料而且不會報錯，現在不會。</figcaption>
+  </figure>
+
+  <div class="cards">
+    <div class="card">
+      <h3><i></i>檔案位置統一管理</h3>
+      <p>今天修掉的第一個問題，就是建立品號寫進了錯的試算表。現在所有系統共用同一份設定，<b>換連結只改一個地方</b>。</p>
+    </div>
+    <div class="card">
+      <h3><i></i>2134 支舊品號驗算</h3>
+      <p>上線前把每一支舊碼跑過一次補零轉換，<b>確認零撞號才敢動</b>。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 待辦 ═══ -->
+<section>
+  <div class="eyebrow"><span class="bar"></span><span class="tx">Next</span></div>
+  <h2>還沒做完的</h2>
+  <p class="sub">誠實列出來，才知道球在誰手上。</p>
+
+  <div class="own">資訊部</div>
+  <ul class="todo">
+    <li>打樣記錄表
+      <span>登客戶、送樣日、客戶回饋的獨立分頁。轉正機制本身已完成，這張表是把打樣過程也留下來</span></li>
+  </ul>
+
+  <div class="own wait">需各單位配合，系統已就緒</div>
+  <ul class="todo">
+    <li>154 筆原料缺 INCI NAME　<em>研發</em>
+      <span>法規成分名，屬資料補登。補齊後這批原料才能換碼</span></li>
+    <li>2134 支舊品號重新分類　<em>研發 · 姬姐</em>
+      <span>換碼工具已上線，等確認每一支該歸到哪個新類別</span></li>
+  </ul>
+</section>
+
+<footer class="foot">
+  <div class="sig">
+    穎利科技股份有限公司 · 資訊部<br>
+    <b>ITEM MASTER · FAIL-SAFE v1.0</b><br>
+    2026.08.01
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

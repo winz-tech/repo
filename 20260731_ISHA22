@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 數位轉型補助｜穎利評估</title>
+<meta name="theme-color" content="#0a0a0c">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#E30613;
+  --bg:#0a0a0c;
+  --panel:#15151a;
+  --line:#2a2a33;
+  --txt:#F4F4F4;
+  --dim:#8b8b96;
+  --ok:#3ddc97;
+  --warn:#ffb020;
+  --en:'Chakra Petch',sans-serif;
+  --tc:'Noto Sans TC','Microsoft JhengHei',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{
+  background:var(--bg);color:var(--txt);font-family:var(--tc);
+  display:flex;align-items:center;justify-content:center;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(60% 40% at 100% 0%,rgba(227,6,19,.16),transparent 60%),
+    radial-gradient(50% 40% at 0% 100%,rgba(227,6,19,.10),transparent 60%);
+}
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:38px 38px;
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,#000,transparent 78%);
+          mask-image:radial-gradient(circle at 50% 50%,#000,transparent 78%);
+}
+
+/* ---------- deck ---------- */
+#deck{
+  position:relative;z-index:1;
+  width:min(100vw,390px);height:100dvh;max-height:900px;
+  display:flex;overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;scroll-behavior:smooth;
+  scrollbar-width:none;
+}
+#deck::-webkit-scrollbar{display:none}
+
+.slide{
+  flex:0 0 100%;height:100%;scroll-snap-align:center;scroll-snap-stop:always;
+  padding:64px 26px 96px;display:flex;flex-direction:column;
+  position:relative;
+}
+/* HUD corner brackets */
+.slide .hud{position:absolute;inset:46px 16px 74px;pointer-events:none}
+.slide .hud i{position:absolute;width:16px;height:16px;border:2px solid var(--red);opacity:.85}
+.slide .hud i:nth-child(1){top:0;left:0;border-right:0;border-bottom:0}
+.slide .hud i:nth-child(2){top:0;right:0;border-left:0;border-bottom:0}
+.slide .hud i:nth-child(3){bottom:0;left:0;border-right:0;border-top:0}
+.slide .hud i:nth-child(4){bottom:0;right:0;border-left:0;border-top:0}
+
+/* ---------- type ---------- */
+.eyebrow{
+  display:inline-block;font-family:var(--en);font-weight:600;font-size:11px;
+  letter-spacing:.16em;color:#fff;background:var(--red);
+  padding:5px 14px;transform:skewX(-18deg);margin-bottom:20px;align-self:flex-start;
+}
+.eyebrow span{display:inline-block;transform:skewX(18deg)}
+h1{font-size:31px;font-weight:900;line-height:1.24;letter-spacing:.01em}
+h2{font-size:23px;font-weight:900;line-height:1.35;margin-bottom:18px}
+.lede{font-size:16px;line-height:1.85;color:#d8d8de;font-weight:400}
+.note{font-size:12.5px;line-height:1.75;color:var(--dim);margin-top:auto}
+.big{font-family:var(--en);font-weight:700;line-height:.86;letter-spacing:-.02em}
+
+/* ---------- pieces ---------- */
+.rule{height:2px;background:var(--red);width:44px;margin:16px 0 20px}
+
+.stack{display:flex;flex-direction:column;gap:11px;margin-top:4px}
+.row{
+  background:var(--panel);border-left:3px solid var(--line);
+  padding:13px 15px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+}
+.row.hit{border-left-color:var(--red)}
+.row .k{font-size:14px;font-weight:500;color:#cfcfd7}
+.row .k small{display:block;font-size:11px;color:var(--dim);margin-top:3px;font-weight:400}
+.row .v{font-family:var(--en);font-size:21px;font-weight:700;white-space:nowrap}
+.row.hit .v{color:var(--red)}
+.row.out .v{color:var(--warn)}
+.row.in  .v{color:var(--ok)}
+
+.money{display:flex;align-items:flex-end;gap:8px;margin:6px 0 4px}
+.money .num{font-family:var(--en);font-size:96px;font-weight:700;line-height:.82;color:var(--red)}
+.money .unit{font-size:26px;font-weight:900;padding-bottom:10px}
+
+.list{display:flex;flex-direction:column;gap:14px;margin-top:2px}
+.item{display:flex;gap:13px;align-items:flex-start}
+.item .n{
+  font-family:var(--en);font-size:13px;font-weight:700;color:var(--red);
+  border:1px solid var(--red);min-width:26px;height:26px;
+  display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px;
+}
+.item .t{font-size:15px;line-height:1.65}
+.item .t small{display:block;color:var(--dim);font-size:12.5px;margin-top:4px;line-height:1.6}
+
+.check{display:flex;flex-direction:column;gap:12px}
+.check div{display:flex;gap:11px;font-size:14.5px;line-height:1.6;align-items:flex-start}
+.check .y{color:var(--ok);font-weight:700;flex:none}
+.check .n{color:var(--red);font-weight:700;flex:none}
+
+.tag{
+  display:inline-block;font-size:11.5px;color:var(--dim);
+  border:1px solid var(--line);padding:5px 11px;margin-top:14px;align-self:flex-start;
+}
+
+/* ---------- chrome ---------- */
+#bar{position:fixed;top:0;left:0;height:3px;background:var(--red);z-index:5;transition:width .25s ease;width:0}
+#idx{
+  position:fixed;top:20px;z-index:5;font-family:var(--en);font-size:12px;
+  letter-spacing:.12em;color:var(--dim);
+  left:50%;transform:translateX(calc(-50% + 130px));
+}
+#idx b{color:var(--red);font-weight:700}
+#brand{
+  position:fixed;top:19px;z-index:5;font-family:var(--en);font-size:12px;
+  font-weight:700;letter-spacing:.2em;color:#fff;
+  left:50%;transform:translateX(calc(-50% - 148px));
+}
+#brand::before{content:'';display:inline-block;width:7px;height:7px;background:var(--red);margin-right:7px;transform:skewX(-18deg)}
+#dots{
+  position:fixed;bottom:26px;z-index:5;display:flex;gap:7px;
+  left:50%;transform:translateX(-50%);
+}
+#dots i{width:16px;height:3px;background:var(--line);cursor:pointer;transition:background .2s}
+#dots i.on{background:var(--red)}
+.tapzone{position:fixed;top:0;bottom:60px;width:22%;z-index:4}
+.tapzone.l{left:0}.tapzone.r{right:0}
+@media (min-width:420px){.tapzone{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  #deck{scroll-behavior:auto}
+  *{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+
+<div id="bar"></div>
+<div id="brand">WINZ</div>
+<div id="idx"><b>01</b> / 10</div>
+
+<div id="deck">
+
+  <!-- 01 封面 -->
+  <section class="slide">
+    <div class="hud"><i></i><i></i><i></i><i></i></div>
+    <div class="eyebrow"><span>經濟部產業發展署</span></div>
+    <h1>產業競爭力輔導團<br>AI 數位轉型補助</h1>
+    <div class="rule"></div>
+    <p class="lede">政府派專家進廠診斷，<br>補你買 AI 工具，補你送人上課。</p>
+    <div class="money" style="margin-top:34px">
+      <span class="num">22</span><span class="unit">萬</span>
+    </div>
+    <p class="lede" style="font-size:14px;color:var(--dim)">穎利最高可領的補助總額</p>
+    <p class="note">執行單位：社團法人中華民國工業安全衛生協會（ISHA）<br>← 左右滑動</p>
+  </section>
+
+  <!-- 02 錢的全貌 -->
+  <section class="slide">
+    <div class="hud"><i></i><i></i><i></i><i></i></div>
+    <div class="eyebrow"><span>錢的全貌</span></div>
+    <h2>整案 42 萬，<br>公司拿得到的是 22 萬</h2>
+    <div class="stack">
+      <div class="row"><div class="k">政府輔導經費<small>付給輔導法人，不經過公司</small></div><div class="v">19萬</div></div>
+      <div class="row"><div class="k">業者自籌<small>公司自己吸收</small></div><div class="v">1萬</div></div>
+      <div class="row hit"><div class="k">AI 應用導入<small>買工具</small></div><div class="v">10萬</div></div>
+      <div class="row hit"><div class="k">AI 人才培訓<small>現金撥給公司</small></div><div class="v">12萬</div></div>
+    </div>
+    <p class="note">DM 上的「最高總補助 22 萬」＝下面兩條紅線相加。</p>
+  </section>
+
+  <!-- 03 支出 -->
+  <section class="slide">
+    <div class="hud"><i></i><i></i><i></i><i></i></div>
+    <div class="eyebrow"><span>公司要先掏</span></div>
+    <h2>總共掏 11 萬<br>其中 10 萬會回來</h2>
+    <div class="stack">
+      <div class="row out"><div class="k">自籌款<small>不退，確定沉沒</small></div><div class="v">−1萬</div></div>
+      <div class="row out"><div class="k">買 AI 工具<small>先墊付，之後退回</small></div><div class="v">−10萬</div></div>
+    </div>
+    <div class="tag">超過 10 萬的部分，差額由公司自付</div>
+    <p class="note">工具必須在「雲市集工業館 – AI 工具庫」架上，不得採購中國大陸廠牌軟硬體。</p>
+  </section>
+
+  <!-- 04 收入 -->
+  <section class="slide">
+    <div class="hud"><i></i><i></i><i></i><i></i></div>
+    <div class="eyebrow"><span>公司拿回來</span></div>
+    <h2>合計入帳 22 萬</h2>
+    <div class="stack">
+      <div class="row in"><div class="k">工具補助<small>確認款項後 15 個工作天退回</small></div><div class="v">+10萬</div></div>
+      <div class="row in"><div class="k">人培補助<small>結訓審核通過後撥付現金</small></div><div class="v">+12萬</div></div>
+    </div>
+    <p class="note">兩筆撥款時點不同，工具款先回、人培款要等課上完。中間有現金流空窗。</p>
+  </section>
+
+  <!-- 05 淨賺（signature） -->
+  <section class="slide" style="justify-content:center">
+    <div class="hud"><i></i><i></i><i></i><i></i></div>
+    <div class="eyebrow"><span>結論</span></div>
+    <div class="money">
+      <span class="num" style="font-size:120px">11</span><span class="unit" style="font-size:32px">萬</span>
+    </div>
+    <p class="lede" style="margin-top:14px">
+      收入 22 萬 － 支出 11 萬<br>
+      <span style="color:var(--dim);font-size:14px">＝ 公司淨賺 11 萬，外加一套 AI 工具</span>
+    </p>
+    <div class="rule" style="margin-top:22px"></div>
+    <p class="note" style="margin-top:16px">另附贈：專家進廠診斷報告書一份，可接後續其他補助。</p>
+  </section>
+
+  <!-- 06 沒寫在 DM 上的成本 -->
+  <section class="slide">
+    <div class="hud"><i></i><i></i><i></i><i></i></div>
+    <div class="eyebrow"><span>換來的條件</span></div>
+    <h2>這 11 萬不是白拿</h2>
+    <div class="list">
+      <div class="item"><div class="n">人</div><div class="t">派 2 人上課 30 小時<small>約 5 堂課、4 天，可線上上課</small></div></div>
+      <div class="item"><div class="n">時</div><div class="t">2 人 × 30 小時 ＝ 60 個工時<small>不能請假，須全程到課，缺課視同放棄</small></div></div>
+      <div class="item"><div class="n">稅</div><div class="t">補助款須認列收入<small>實際稅後金額請會計試算</small></div></div>
+      <div class="item"><div class="n">期</div><div class="t">3 個月內跑完<small>從提出申請到完成進廠輔導</small></div></div>
+    </div>
+  </section>
+
+  <!-- 07 三步驟 -->
+  <section class="slide">
+    <div class="hud"><i></i><i></i><i></i><i></i></div>
+    <div class="eyebrow"><span>申請流程</span></div>
+    <h2>只要 3 步驟</h2>
+    <div class="list">
+      <div class="item"><div class="n">01</div><div class="t">填寫切結同意書<small>用印公司大小章後備存</small></div></div>
+      <div class="item"><div class="n">02</div><div class="t">完成線上量表<small>AI 成熟度評量，線上填寫入案</small></div></div>
+      <div class="item"><div class="n">03</div><div class="t">輔導診斷<small>工安協會追蹤派案，安排專家進廠與人才培育排程</small></div></div>
+    </div>
+    <div class="tag">115 年起一律透過競爭力輔導團官網入案</div>
+  </section>
+
+  <!-- 08 資格 -->
+  <section class="slide">
+    <div class="hud"><i></i><i></i><i></i><i></i></div>
+    <div class="eyebrow"><span>資格門檻</span></div>
+    <h2>送件前先自我檢查</h2>
+    <div class="check">
+      <div><span class="y">須</span><span>製造業，並依法辦妥工廠登記</span></div>
+      <div><span class="y">須</span><span>實收資本額 1 億以下，或經常僱用員工未滿 200 人</span></div>
+      <div><span class="y">須</span><span>非陸資企業</span></div>
+      <div><span class="n">禁</span><span>同年度已領同性質補助（雲市集點數、升級轉型補助等）不可重複申請</span></div>
+      <div><span class="n">禁</span><span>採購中國大陸廠牌之資通訊軟硬體或雲端服務</span></div>
+      <div><span class="n">禁</span><span>近 3 年有政府計畫重大違約紀錄</span></div>
+    </div>
+    <p class="note">違反者得撤銷補助、追回全額，並列入重大違約紀錄。</p>
+  </section>
+
+  <!-- 09 風險 -->
+  <section class="slide">
+    <div class="hud"><i></i><i></i><i></i><i></i></div>
+    <div class="eyebrow"><span>要盯住的地方</span></div>
+    <h2>三個容易翻車的點</h2>
+    <div class="list">
+      <div class="item"><div class="n">01</div><div class="t">人培 12 萬「撥現金」要書面<small>口頭承諾不算，請窗口以 email 或公文回覆留底</small></div></div>
+      <div class="item"><div class="n">02</div><div class="t">工具要先選好<small>買了不用等於白花力氣，先確定要解決哪個瓶頸再挑架上方案</small></div></div>
+      <div class="item"><div class="n">03</div><div class="t">課要真的上完<small>60 工時要先跟現場排開，缺課補助全泡湯</small></div></div>
+    </div>
+  </section>
+
+  <!-- 10 下一步 -->
+  <section class="slide" style="justify-content:center">
+    <div class="hud"><i></i><i></i><i></i><i></i></div>
+    <div class="eyebrow"><span>下一步</span></div>
+    <h1 style="font-size:27px">確認可行後<br>三件事同時開跑</h1>
+    <div class="rule"></div>
+    <div class="list" style="margin-top:6px">
+      <div class="item"><div class="n">A</div><div class="t">向窗口取得書面條件確認</div></div>
+      <div class="item"><div class="n">B</div><div class="t">盤點想導入的 AI 工具清單</div></div>
+      <div class="item"><div class="n">C</div><div class="t">排定 2 位受訓同仁與 4 天課程檔期</div></div>
+    </div>
+    <p class="note">諮詢專線 0800-000-257｜經濟部產業競爭力輔導團<br>穎利科技股份有限公司 · 內部評估用</p>
+  </section>
+
+</div>
+
+<div id="dots"></div>
+<div class="tapzone l" onclick="go(-1)"></div>
+<div class="tapzone r" onclick="go(1)"></div>
+
+<script>
+(function(){
+  var deck=document.getElementById('deck');
+  var slides=deck.querySelectorAll('.slide');
+  var dots=document.getElementById('dots');
+  var bar=document.getElementById('bar');
+  var idx=document.getElementById('idx');
+  var total=slides.length;
+  var cur=0;
+
+  idx.innerHTML='<b>01</b> / '+String(total).padStart(2,'0');
+
+  for(var i=0;i<total;i++){
+    var d=document.createElement('i');
+    d.dataset.i=i;
+    d.onclick=function(){jump(+this.dataset.i)};
+    dots.appendChild(d);
+  }
+  var dotEls=dots.querySelectorAll('i');
+
+  function paint(){
+    for(var i=0;i<total;i++) dotEls[i].className = (i===cur?'on':'');
+    bar.style.width=((cur+1)/total*100)+'%';
+    idx.innerHTML='<b>'+String(cur+1).padStart(2,'0')+'</b> / '+String(total).padStart(2,'0');
+  }
+  function jump(n){
+    cur=Math.max(0,Math.min(total-1,n));
+    deck.scrollTo({left:cur*deck.clientWidth,behavior:'smooth'});
+    paint();
+  }
+  window.go=function(d){jump(cur+d)};
+
+  var t;
+  deck.addEventListener('scroll',function(){
+    clearTimeout(t);
+    t=setTimeout(function(){
+      var n=Math.round(deck.scrollLeft/deck.clientWidth);
+      if(n!==cur){cur=n;paint();}
+    },80);
+  });
+
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key===' ')go(1);
+    if(e.key==='ArrowLeft')go(-1);
+  });
+
+  window.addEventListener('resize',function(){
+    deck.scrollLeft=cur*deck.clientWidth;
+  });
+
+  paint();
+})();
+</script>
+</body>
+</html>

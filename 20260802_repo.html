@@ -3,94 +3,352 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>財產清冊集合攤提｜穎利科技</title>
+<title>財產清冊怎麼算進成本｜穎利科技</title>
 <meta name="theme-color" content="#101014">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F6F4; --ink:#16161A; --winz:#E30613; --winz-deep:#8F0009;
+  --slate:#6B6B75; --rule:#DEDCD8; --dark:#101014;
+  --ok:#1F7A4D; --warn:#C8811A; --soft:#FFF3F3;
+  --tc:'Noto Sans TC','Microsoft JhengHei','PingFang TC',sans-serif;
+  --en:'Chakra Petch','Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0B0B0E;font-family:var(--tc);-webkit-font-smoothing:antialiased}
 
-<!--
-═══════════════════════════════════════════════════════════
-  WINZ DECK ENGINE  v1
-  ─────────────────────────────────────────────────────────
-  這支檔案分兩層，改簡報只要動下面那層：
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#deck{width:1600px;height:900px;position:relative;transform-origin:center center;flex:none}
 
-  ① 引擎（<style> ＋ 最下面的 <script> 引擎段）  → 不用動
-  ② 資料（var DECK = {
-  meta: {
-    title: '財產清冊怎麼算進成本',
-    org: 'WINZ TECHNOLOGY',
-    date: '2026 / 08 / 02',
-    author: '江元家'
-  },
+.slide{position:absolute;inset:0;background:var(--paper);color:var(--ink);
+  padding:70px 92px;display:none;flex-direction:column;overflow:hidden}
+.slide.on{display:flex}
+.slide.dark{background:var(--dark);color:#fff}
+
+.slide.on>*{opacity:0;transform:translateY(24px)}
+.slide.on.play>*{opacity:1;transform:none;
+  transition:opacity .45s cubic-bezier(.2,.8,.3,1),transform .45s cubic-bezier(.2,.8,.3,1)}
+.slide.on.play>*:nth-child(1){transition-delay:.02s}
+.slide.on.play>*:nth-child(2){transition-delay:.09s}
+.slide.on.play>*:nth-child(3){transition-delay:.16s}
+.slide.on.play>*:nth-child(4){transition-delay:.23s}
+.slide.on.play>*:nth-child(5){transition-delay:.30s}
+
+.eyebrow{display:flex;align-items:center;gap:15px;margin-bottom:13px;flex:none}
+.eyebrow .bar{width:44px;height:15px;background:var(--winz);transform:skewX(-18deg);flex:none}
+.eyebrow .tx{font-family:var(--en);font-weight:700;font-size:22px;letter-spacing:5px;
+  color:var(--winz);text-transform:uppercase}
+.slide.dark .eyebrow .tx{color:#FF7A80}
+
+h1{font-size:84px;font-weight:900;letter-spacing:2px;line-height:1.14;flex:none}
+h2{font-size:60px;font-weight:900;letter-spacing:1px;line-height:1.2;flex:none;margin-bottom:6px}
+.sub{font-size:29px;color:var(--slate);font-weight:500;line-height:1.6;flex:none}
+.slide.dark .sub{color:#9A9AA4}
+
+.step{opacity:0;transform:translateY(18px) scale(.987);
+  transition:opacity .32s cubic-bezier(.2,.8,.3,1),transform .32s cubic-bezier(.2,.8,.3,1)}
+.step.shown{opacity:1;transform:none}
+
+.cover-mark{width:172px;height:11px;background:var(--winz);transform:skewX(-18deg);
+  margin-bottom:48px;flex:none}
+.cover-meta{margin-top:auto;display:flex;align-items:flex-end;gap:60px;flex:none;flex-wrap:wrap}
+.cover-meta div{font-family:var(--en);font-size:24px;letter-spacing:3px;color:#9A9AA4}
+.cover-meta b{display:block;font-family:var(--tc);font-size:32px;font-weight:700;
+  color:#fff;letter-spacing:1px;margin-top:7px}
+
+.divider-wrap{flex:1;display:flex;align-items:center;gap:66px}
+.big-letter{font-family:var(--en);font-size:320px;font-weight:700;line-height:.8;
+  color:var(--winz);transform:skewX(-10deg);flex:none}
+.divider-list{font-size:33px;line-height:2;color:#B9B9C2;font-weight:500}
+.divider-list b{color:#fff;font-weight:700}
+
+.stats{flex:1;display:grid;gap:22px;align-items:stretch;margin-top:30px}
+.stats.n2{grid-template-columns:repeat(2,1fr)}
+.stats.n3{grid-template-columns:repeat(3,1fr)}
+.stats.n4{grid-template-columns:repeat(4,1fr)}
+.stats.n5{grid-template-columns:repeat(5,1fr)}
+.stat{background:#fff;border:2px solid var(--rule);border-radius:6px;padding:32px 24px;
+  display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;width:100%;height:8px;background:var(--rule)}
+.stat.k-ok::before{background:var(--ok)}
+.stat.k-warn::before{background:var(--warn)}
+.stat.k-red{border-color:var(--winz);background:var(--soft)}
+.stat.k-red::before{background:var(--winz)}
+.stat .n{font-family:var(--en);font-size:82px;font-weight:700;line-height:1;letter-spacing:-2px}
+.stat .n small{font-size:.4em;color:var(--slate);font-weight:600;margin-right:5px}
+.stat .k{font-size:27px;font-weight:700;margin-top:11px}
+.stat .e{font-family:var(--en);font-size:16px;letter-spacing:3px;color:var(--slate);margin-top:4px}
+.stat.k-red .n{color:var(--winz)}
+
+.cards{flex:1;display:grid;gap:20px;align-content:center;margin-top:24px}
+.cards.n1{grid-template-columns:1fr}
+.cards.n2{grid-template-columns:1fr 1fr}
+.cards.n3{grid-template-columns:repeat(3,1fr)}
+.card{background:#fff;border:2px solid var(--rule);border-radius:6px;padding:26px 28px}
+.card h3{font-size:30px;font-weight:900;margin-bottom:11px;display:flex;align-items:center;gap:12px}
+.card h3 i{width:11px;height:25px;background:var(--winz);transform:skewX(-18deg);
+  flex:none;font-style:normal}
+.card p{font-size:24px;line-height:1.65;color:#3A3A42}
+.card p+p{margin-top:12px}
+.card ul{list-style:none;font-size:24px;line-height:1.7;color:#3A3A42}
+.card li{padding-left:25px;position:relative}
+.card li::before{content:'';position:absolute;left:0;top:14px;width:10px;height:10px;
+  background:var(--winz);transform:skewX(-18deg)}
+
+.items{flex:1;display:grid;gap:18px;align-content:center;margin-top:22px}
+.items.two{grid-template-columns:1fr 1fr;gap:18px 38px}
+.item{display:flex;gap:20px;align-items:flex-start;border-left:6px solid var(--rule);
+  padding:9px 0 9px 21px}
+.item.shown{border-left-color:var(--winz)}
+.item .idx{font-family:var(--en);font-weight:700;font-size:20px;color:var(--winz);
+  padding-top:5px;flex:none;width:32px}
+.item h3{font-size:30px;font-weight:900;line-height:1.34}
+.item p{font-size:24px;color:var(--slate);line-height:1.6;margin-top:5px}
+
+.tbl{flex:1;display:flex;flex-direction:column;justify-content:center;margin-top:22px;min-height:0}
+table{width:100%;border-collapse:collapse;font-size:25px}
+thead th{background:var(--ink);color:#fff;font-weight:700;padding:13px 16px;text-align:left;
+  font-size:22px;letter-spacing:1px}
+thead th.r{text-align:right}
+tbody td{padding:12px 16px;border-bottom:1px solid var(--rule);background:#fff;color:#3A3A42}
+tbody td.r{text-align:right;font-family:var(--en);font-weight:600}
+tbody td b{color:var(--ink);font-weight:700}
+tbody tr.hi td{background:var(--soft)}
+tbody tr.tot td{background:var(--ink);color:#fff;font-weight:700;border:none}
+tbody tr.tot td b{color:#fff}
+.tbl .cap{font-size:20px;color:var(--slate);margin-top:14px;line-height:1.6}
+
+.pbar{display:flex;align-items:center;gap:10px;justify-content:flex-end}
+.pbar .t{width:130px;height:14px;background:#E8E6E2;border-radius:2px;overflow:hidden;flex:none}
+.pbar .f{display:block;height:100%;background:var(--warn)}
+.pbar .f.hot{background:var(--winz)}
+.pbar .v{font-family:var(--en);font-weight:700;font-size:22px;width:74px;text-align:right}
+body.flow .pbar .t{width:70px;height:10px}
+body.flow .pbar .v{font-size:14px;width:52px}
+
+.band{flex:none;margin-top:20px;background:var(--soft);border-left:8px solid var(--winz);
+  padding:17px 24px;font-size:24px;line-height:1.75;color:var(--winz-deep)}
+.band b{color:var(--ink)}
+.band.ok{background:#F1F7F3;border-left-color:var(--ok);color:#155E3B}
+.band.warn{background:#FDF6E9;border-left-color:var(--warn);color:#8A5A0E}
+
+.quote{background:#fff;border:2px dashed var(--winz);border-radius:6px;padding:24px 28px;
+  font-family:var(--en);font-size:26px;line-height:1.9;color:#3A3A42}
+.quote b{color:var(--winz);font-weight:700}
+.quote span{font-family:var(--tc)}
+
+.end-big{font-size:112px;font-weight:900;line-height:1.12;letter-spacing:2px}
+.end-sub{font-size:34px;color:#9A9AA4;margin-top:26px;line-height:1.75}
+
+#hud{position:fixed;left:0;right:0;bottom:0;height:6px;background:rgba(255,255,255,.12);z-index:50}
+#prog{height:100%;width:0;background:var(--winz);transition:width .3s ease}
+#pager{position:fixed;right:24px;bottom:22px;z-index:51;font-family:var(--en);
+  font-size:18px;letter-spacing:2px;color:rgba(255,255,255,.55);display:flex;
+  align-items:center;gap:16px}
+#pager b{color:#fff;font-size:24px}
+.navbtn{width:38px;height:38px;border:1px solid rgba(255,255,255,.28);background:transparent;
+  color:rgba(255,255,255,.75);border-radius:4px;cursor:pointer;font-size:18px;font-family:var(--en)}
+.navbtn:hover{border-color:var(--winz);color:#fff;background:rgba(227,6,19,.28)}
+#helpbar{position:fixed;left:24px;bottom:22px;z-index:51;font-family:var(--en);font-size:15px;
+  letter-spacing:1.5px;color:rgba(255,255,255,.32)}
+#helpbar kbd{border:1px solid rgba(255,255,255,.25);border-radius:3px;padding:1px 7px;margin:0 2px}
+#clock{position:fixed;top:20px;right:24px;z-index:51;font-family:var(--en);font-size:21px;
+  letter-spacing:2px;color:rgba(255,255,255,.4);cursor:pointer;user-select:none}
+#clock.run{color:var(--winz)}
+
+#grid{position:fixed;inset:0;background:rgba(8,8,11,.97);z-index:80;display:none;
+  padding:48px 56px;overflow-y:auto}
+#grid.on{display:block}
+#grid h4{color:#fff;font-family:var(--en);font-size:22px;letter-spacing:5px;margin-bottom:26px}
+#gridwrap{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.gcell{background:#1A1A20;border:2px solid #2C2C34;border-radius:5px;padding:18px;
+  cursor:pointer;transition:.15s}
+.gcell:hover{border-color:var(--winz);background:#241416}
+.gcell.cur{border-color:var(--winz);background:#2A1416}
+.gcell .gn{font-family:var(--en);font-size:18px;color:var(--winz);font-weight:700}
+.gcell .gt{color:#E4E4E9;font-size:19px;font-weight:500;margin-top:7px;line-height:1.4}
+
+#notes{position:fixed;left:0;right:0;bottom:0;background:rgba(10,10,14,.97);
+  border-top:3px solid var(--winz);padding:22px 38px 32px;z-index:70;display:none}
+#notes.on{display:block}
+#notes .nh{font-family:var(--en);font-size:15px;letter-spacing:4px;color:var(--winz);
+  font-weight:700;margin-bottom:9px}
+#notes .nb{color:#D8D8DE;font-size:22px;line-height:1.7;max-width:1400px}
+
+/* ══ 手機瀑布流 ══ */
+body.flow{height:auto;overflow-y:auto;background:var(--paper)}
+body.flow #stage{position:static;display:block}
+body.flow #deck{width:100%;height:auto;transform:none!important}
+body.flow #hud,body.flow #pager,body.flow #helpbar,body.flow #clock,
+body.flow #grid,body.flow #notes{display:none!important}
+body.flow .slide{position:relative;inset:auto;display:flex!important;min-height:auto;
+  padding:44px 22px 48px;border-bottom:1px solid var(--rule)}
+body.flow .slide.dark{border-bottom:none}
+body.flow .slide>*{opacity:1!important;transform:none!important}
+body.flow .step{opacity:1!important;transform:none!important}
+body.flow h1{font-size:38px}
+body.flow h2{font-size:31px;margin-bottom:10px}
+body.flow .sub{font-size:17px}
+body.flow .eyebrow .tx{font-size:14px;letter-spacing:3px}
+body.flow .eyebrow .bar{width:30px;height:10px}
+body.flow .cover-mark{width:110px;height:8px;margin-bottom:26px}
+body.flow .cover-meta{gap:22px;margin-top:34px}
+body.flow .cover-meta div{font-size:14px}
+body.flow .cover-meta b{font-size:19px}
+body.flow .divider-wrap{flex-direction:column;align-items:flex-start;gap:14px}
+body.flow .big-letter{font-size:120px}
+body.flow .divider-list{font-size:18px;line-height:1.95}
+body.flow .stats{grid-template-columns:1fr 1fr!important;gap:11px;margin-top:20px}
+body.flow .stat{padding:18px 14px}
+body.flow .stat .n{font-size:40px}
+body.flow .stat .k{font-size:15px;margin-top:7px}
+body.flow .stat .e{font-size:11px}
+body.flow .cards{grid-template-columns:1fr!important;gap:13px;margin-top:18px}
+body.flow .card{padding:18px 20px}
+body.flow .card h3{font-size:20px}
+body.flow .card p,body.flow .card ul{font-size:16px}
+body.flow .card li::before{top:10px;width:8px;height:8px}
+body.flow .items{grid-template-columns:1fr!important;gap:14px;margin-top:18px}
+body.flow .item{padding:7px 0 7px 15px;border-left-width:5px;gap:13px}
+body.flow .item .idx{font-size:14px;width:22px}
+body.flow .item h3{font-size:19px}
+body.flow .item p{font-size:16px}
+body.flow .tbl{margin-top:18px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+body.flow table{font-size:15px;min-width:500px}
+body.flow thead th{font-size:13px;padding:9px 10px}
+body.flow tbody td{padding:8px 10px}
+body.flow .tbl .cap{font-size:13px}
+body.flow .band{font-size:16px;padding:13px 16px;border-left-width:6px;margin-top:16px}
+body.flow .quote{font-size:15px;padding:15px 17px;line-height:1.85}
+body.flow .end-big{font-size:44px}
+body.flow .end-sub{font-size:18px;margin-top:16px}
+body.flow #flowbar{display:block}
+body.flow #totop{display:flex}
+
+#flowbar{display:none;position:fixed;left:0;right:0;top:0;height:4px;z-index:90;
+  background:rgba(0,0,0,.08)}
+#flowbar i{display:block;height:100%;width:0;background:var(--winz)}
+#totop{display:none;position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));
+  z-index:90;width:46px;height:46px;border-radius:50%;background:var(--winz);color:#fff;
+  align-items:center;justify-content:center;font-size:20px;border:none;cursor:pointer;
+  box-shadow:0 6px 18px rgba(227,6,19,.42);opacity:0;pointer-events:none;transition:opacity .25s}
+#totop.on{opacity:1;pointer-events:auto}
+
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01s!important;animation-duration:.01s!important}}
+</style>
+</head>
+<body>
+
+<div id="stage"><div id="deck"></div></div>
+
+<div id="hud"><div id="prog"></div></div>
+<div id="clock" title="點一下開始／暫停計時">00:00</div>
+<div id="pager">
+  <button class="navbtn" id="prev">&lsaquo;</button>
+  <span><b id="cur">1</b> / <span id="tot">–</span></span>
+  <span id="stepinfo"></span>
+  <button class="navbtn" id="next">&rsaquo;</button>
+</div>
+<div id="helpbar"><kbd>&rarr;</kbd> 下一格　<kbd>&larr;</kbd> 退回　<kbd>&darr;</kbd> 全展開　<kbd>P</kbd> 簡報者視窗　<kbd>O</kbd> 總覽　<kbd>N</kbd> 講稿　<kbd>T</kbd> 計時　<kbd>F</kbd> 全螢幕</div>
+
+<div id="grid"><h4>// ALL SLIDES　點一下跳頁　ESC 關閉</h4><div id="gridwrap"></div></div>
+<div id="notes"><div class="nh">// 講稿</div><div class="nb" id="notebody"></div></div>
+
+<div id="flowbar"><i id="flowprog"></i></div>
+<button id="totop" title="回到最上面">&uarr;</button>
+
+<script>
+/* ============================================================
+   資料層 —— 每次做新簡報只換這一段
+   ============================================================ */
+var DECK = {
+  meta: { title:'財產清冊怎麼算進成本', org:'WINZ TECHNOLOGY', date:'2026 / 08 / 02' },
   slides: [
 
-/* 1 */ { type:'cover', dark:true,
-  t:'財產清冊<br>怎麼算進成本',
-  meta:[['DATE','2026 / 08 / 02'],['BY','江元家']],
-  note:'老闆給的 442 筆財產清冊，我把它接進代工成本了。六頁講完。' },
+  { type:'cover', dark:true,
+    t:'財產清冊<br>怎麼算進成本',
+    meta:[['DATE','2026 / 08 / 02'],['BY','江元家']],
+    note:'老闆給的 442 筆財產清冊，我把它接進代工成本了。六頁講完。' },
 
-/* 2 */ { type:'stats', eyebrow:'Numbers', t:'先看數字', cols:4,
-  items:[
-    { n:'442', k:'財產清冊筆數', e:'TOTAL' },
-    { n:'394', k:'納入攤提', e:'INCLUDED', kind:'ok' },
-    { n:'48',  k:'暫不納入', e:'EXCLUDED', kind:'warn' },
-    { n:'2,612', k:'每月攤提', e:'NT$ / MONTH', kind:'red' }
-  ],
-  band:'加上原本 13 台個別設備，<b>每月設備折舊合計 $39,333</b>，已經接進代工成本。',
-  note:'四個數字講完就好。重點是最後那個 $39,333，那是成本引擎會用到的。' },
+  { type:'stats', eyebrow:'Numbers', t:'先看數字', cols:4,
+    items:[
+      { n:'442', k:'財產清冊筆數', e:'TOTAL' },
+      { n:'394', k:'納入攤提', e:'INCLUDED', kind:'ok' },
+      { n:'48',  k:'暫不納入', e:'EXCLUDED', kind:'warn' },
+      { n:'2,612', k:'每月攤提', e:'PER MONTH', s:'NT$', kind:'red' }
+    ],
+    band:'加上原本 13 台個別設備，<b>每月設備折舊合計 $39,333</b>，已經接進代工成本。<br>442 筆裡有 <b>217 筆</b>是實際購入價、<b>225 筆</b>是推估的，金額剛好各佔一半。',
+    note:'四個數字講完就好。重點是最後那個 $39,333，那是成本引擎會用到的。' },
 
-/* 3 */ { type:'cards', eyebrow:'Method', t:'我是怎麼做的', cols:3,
-  items:[
-    { h:'分成六池', body:'<p>442 筆依財產分類分池：生產、實驗、廠務、辦公、倉儲、什項。</p><p style="color:var(--slate)">不逐台建檔，維護不了。</p>' },
-    { h:'池內逐台算', body:'<p>不是抓平均數。每台都用<b>金額 ÷ 年限 ÷ 12</b>算，超過年限的<b>歸零</b>。</p><p style="color:var(--slate)">這樣才對得上會計。</p>' },
-    { h:'設備清冊只加五列', body:'<p>各池加總後寫一列彙總（<b>POOL-</b> 開頭）。</p><p>442 筆明細留在財產清冊，不搬家。</p>' }
-  ],
-  note:'第二張要停一下 —— 「逐台算不是抓平均」是這個做法能拿去對帳的關鍵。' },
+  { type:'cards', eyebrow:'Method', t:'我是怎麼做的', cols:3,
+    items:[
+      { h:'分成六池', body:'<p>會計上叫 <b>群組折舊</b>（集合攤提），處理大量小額同性質資產的標準作法。</p><p>442 筆依財產分類分池：生產、實驗、廠務、辦公、倉儲、什項。</p><p style="color:var(--slate)">「什項」＝雜項，政府財物標準分類的科目名，指歸不進其他五類的設備（茶水間家電、捕蟲燈等）。</p>' },
+      { h:'池內逐台算', body:'<p>不是抓平均數。每台都用<b>金額 ÷ 年限 ÷ 12</b> 算，超過年限的<b>歸零</b>。</p><p style="color:var(--slate)">這樣才對得上會計。</p>' },
+      { h:'設備清冊只加五列', body:'<p>各池加總後寫一列彙總，編號 <b>POOL-</b> 開頭。</p><p>442 筆明細留在財產清冊，不搬家。</p>' }
+    ],
+    note:'第一張先講「這是會計標準作法，不是我自己想的」。第二張停一下 —— 逐台算不是抓平均，這是能拿去對帳的關鍵。' },
 
-/* 4 */ { type:'table', eyebrow:'Result', t:'各池結果',
-  head:['分類','台數','取得成本','每月攤提'],
-  align:['','r','r','r'],
-  rows:[
-    ['辦公設備','238','$1,293,388','<b>$1,260</b>'],
-    ['實驗設備','30','$828,000','<b>$667</b>'],
-    ['廠務設備','38','$277,620','<b>$357</b>'],
-    ['倉儲設備','68','$162,610','<b>$273</b>'],
-    ['什項設備','20','$58,222','<b>$55</b>'],
-    ['__tot','394','$2,619,840','$2,612']
-  ],
-  cap:'多數是 2019～2021 年買的，超過耐用年限已攤完，所以每月數字不大。',
-  note:'不用逐列念。講一句「多數已經攤完，所以數字不大」就好。' },
+  { type:'table', eyebrow:'Result', t:'各池結果',
+    head:['分類','台數','取得成本','每月攤提'],
+    align:['','r','r','r'],
+    rows:[
+      ['辦公設備','238','$1,293,388','<b>$1,260</b>'],
+      ['實驗設備','30','$828,000','<b>$667</b>'],
+      ['廠務設備','38','$277,620','<b>$357</b>'],
+      ['倉儲設備','68','$162,610','<b>$273</b>'],
+      ['什項設備','20','$58,222','<b>$55</b>'],
+      ['__tot','394','$2,619,840','$2,612']
+    ],
+    cap:'多數是 2019～2021 年買的，超過耐用年限已攤完，所以每月數字不大。',
+    note:'不用逐列念。講一句「多數已經攤完，所以數字不大」就好。' },
 
-/* 5 */ { type:'items', eyebrow:'Honest', t:'兩件要先講清楚',
-  items:[
-    { h:'442 筆裡只有 217 筆有實際購入價', p:'其餘 225 筆是推估的 —— 用同款已知價格套用。清冊裡每一筆都標了「金額來源」和「推估依據」，可以回查。其中實驗設備 30 台是按市價概估，需要研發部確認。' },
-    { h:'生產設備 48 台整類先排除', p:'48 台中有 42 台沒有金額（87%），已知的又從 6 千到 59 萬差 100 倍，推出來會失真 —— 自動化產線跟洗手槽會變成同一個價。等拿到真實金額再整批納入。' }
-  ],
-  band:'需要姬姐協助調一份<b>「固定資產及折舊明細表」</b>（營所稅申報附表），生產設備就能補齊。',
-  note:'這頁最重要。誠實講，不要防衛。最後那句是唯一要別人做的事。' },
 
-/* 6 */ { type:'end', dark:true, eyebrow:'Next',
-  big:'一份文件<br>補齊最後一塊',
-  sub:'請姬姐調「固定資產及折舊明細表」<br>拿到之後，生產設備 48 台整批納入',
-  foot:'以上，謝謝',
-  note:'收尾。把要姬姐做的那件事再講一次就好。' }
+  { type:'table', eyebrow:'Data Quality', t:'金額有一半是推估的',
+    sub:'納入攤提的 394 筆，依推估佔金額比排序',
+    head:['分類','台數','真實 / 推估','推估佔金額比'],
+    align:['','r','r','r'],
+    rows:[
+      ['__hi|實驗設備','30','0 / 30','<span class="pbar"><span class="t"><i class="f hot" style="width:100%"></i></span><span class="v">100%</span></span>'],
+      ['倉儲設備','68','20 / 48','<span class="pbar"><span class="t"><i class="f" style="width:69%"></i></span><span class="v">69%</span></span>'],
+      ['辦公設備','238','144 / 94','<span class="pbar"><span class="t"><i class="f" style="width:27%"></i></span><span class="v">27%</span></span>'],
+      ['廠務設備','38','30 / 8','<span class="pbar"><span class="t"><i class="f" style="width:21%"></i></span><span class="v">21%</span></span>'],
+      ['什項設備','20','17 / 3','<span class="pbar"><span class="t"><i class="f" style="width:14%"></i></span><span class="v">14%</span></span>'],
+      ['__tot','394','211 / 183','51.5%']
+    ],
+    cap:'推估＝用同款已知價格套用，清冊裡每筆都標了「金額來源」與「推估依據」，可逐筆回查。',
+    band:'金額愈大的分類，推估佔比愈高 —— 這是這份數字最脆弱的地方，先講在前面。',
+    note:'表格由上往下就是可信度由低到高。實驗設備那列紅底，整類沒有金額，是純市價估的。合計 51.5% 這個數字要主動講，不要等人問。' },
+
+  { type:'items', eyebrow:'Honest', t:'兩件要先講清楚',
+    items:[
+      { h:'442 筆裡只有 217 筆有實際購入價',
+        p:'其餘 225 筆是推估的 —— 用同款已知價格套用。清冊裡每一筆都標了「金額來源」和「推估依據」，可以回查。其中實驗設備 30 台是按市價概估。' },
+      { h:'生產設備 48 台整類先排除',
+        p:'48 台中有 42 台沒有金額（87%），已知的又從 6 千到 59 萬差 100 倍，推出來會失真 —— 自動化產線跟洗手槽會變成同一個價。等拿到真實金額再整批納入。' }
+    ],
+    band:'需要請<b>喬丹</b>協助調一份<b>「固定資產及折舊明細表」</b>（營所稅申報附表），生產設備就能補齊。',
+    note:'這頁最重要。誠實講，不要防衛。最後那句是唯一要別人做的事 —— 找喬丹調表。' },
+
+  { type:'end', dark:true, eyebrow:'Next',
+    big:'一份文件<br>補齊最後一塊',
+    sub:'請喬丹協助調「固定資產及折舊明細表」<br>拿到之後，生產設備 48 台整批納入',
+    foot:'以上です',
+    note:'收尾。把要喬丹做的那件事再講一次就好。' }
 
   ]
 };
 
-/* ═══════════════════════════════════════════════════
-   ①　引　擎　層　—　不用動
-   ═══════════════════════════════════════════════════ */
+/* ============================================================
+   引擎層 —— 不用動
+   ============================================================ */
 (function(){
   var $ = function(id){ return document.getElementById(id); };
   var esc = function(s){ return String(s == null ? '' : s); };
   var S = DECK.slides || [], M = DECK.meta || {};
   var IDX = 0, STEP = 0, FLOW = false;
 
-  document.title = (M.title || '簡報') + '｜' + (M.org || '');
-
-  /* ── 判斷模式：窄螢幕 or 手機 → 瀑布流 ── */
   function isFlow(){
     var ua = navigator.userAgent;
     var mob = /Mobi|Android|iPhone|iPod/i.test(ua) ||
@@ -98,15 +356,13 @@
     return mob || Math.min(innerWidth, innerHeight) < 620 || innerWidth < 860;
   }
 
-  /* ── 產生每一頁 ── */
-  function build(){
-    $('deck').innerHTML = S.map(function(s, i){ return slideHtml(s, i); }).join('');
-    $('tot').textContent = S.length;
+  function eb(s){
+    return s.eyebrow ? '<div class="eyebrow"><span class="bar"></span><span class="tx">' +
+      esc(s.eyebrow) + '</span></div>' : '';
   }
-
-  function eyebrow(s){
-    return s.eyebrow ? '<div class="eyebrow"><span class="bar"></span>' +
-      '<span class="tx">' + esc(s.eyebrow) + '</span></div>' : '';
+  function band(s){
+    return s.band ? '<div class="band' + (s.bandKind ? ' ' + s.bandKind : '') + '">' +
+      esc(s.band) + '</div>' : '';
   }
 
   function slideHtml(s, i){
@@ -118,75 +374,63 @@
           return '<div>' + esc(m[0]) + '<b>' + esc(m[1]) + '</b></div>'; }).join('') + '</div>';
     }
     else if (t === 'section'){
-      b = eyebrow(s) + '<div class="divider-wrap">' +
-        '<div class="big-letter">' + esc(s.letter) + '</div>' +
-        '<div class="divider-list">' + esc(s.list) + '</div></div>';
+      b = eb(s) + '<div class="divider-wrap"><div class="big-letter">' + esc(s.letter) +
+        '</div><div class="divider-list">' + esc(s.list) + '</div></div>';
     }
     else if (t === 'stats'){
-      b = eyebrow(s) + '<h2>' + esc(s.t) + '</h2>' +
+      b = eb(s) + '<h2>' + esc(s.t) + '</h2>' +
         (s.sub ? '<div class="sub">' + esc(s.sub) + '</div>' : '') +
         '<div class="stats n' + (s.cols || (s.items || []).length) + '">' +
         (s.items || []).map(function(x){
           return '<div class="stat step' + (x.kind ? ' k-' + x.kind : '') + '">' +
             '<div class="n">' + (x.s ? '<small>' + esc(x.s) + '</small>' : '') + esc(x.n) + '</div>' +
-            '<div class="k">' + esc(x.k) + '</div>' +
-            '<div class="e">' + esc(x.e) + '</div></div>'; }).join('') + '</div>' +
-        (s.band ? '<div class="band' + (s.bandKind ? ' ' + s.bandKind : '') + '">' + esc(s.band) + '</div>' : '');
+            '<div class="k">' + esc(x.k) + '</div><div class="e">' + esc(x.e) + '</div></div>';
+        }).join('') + '</div>' + band(s);
     }
     else if (t === 'cards'){
-      b = eyebrow(s) + '<h2>' + esc(s.t) + '</h2>' +
+      b = eb(s) + '<h2>' + esc(s.t) + '</h2>' +
         (s.sub ? '<div class="sub">' + esc(s.sub) + '</div>' : '') +
         '<div class="cards n' + (s.cols || (s.items || []).length) + '">' +
         (s.items || []).map(function(x){
-          return '<div class="card step"><h3><i></i>' + esc(x.h) + '</h3>' +
-            esc(x.body || '') + '</div>'; }).join('') + '</div>' +
-        (s.band ? '<div class="band' + (s.bandKind ? ' ' + s.bandKind : '') + '">' + esc(s.band) + '</div>' : '');
+          return '<div class="card step"><h3><i></i>' + esc(x.h) + '</h3>' + esc(x.body || '') + '</div>';
+        }).join('') + '</div>' + band(s);
     }
     else if (t === 'items'){
       var its = s.items || [];
-      b = eyebrow(s) + '<h2>' + esc(s.t) + '</h2>' +
+      b = eb(s) + '<h2>' + esc(s.t) + '</h2>' +
         (s.lead ? '<div class="sub">' + esc(s.lead) + '</div>' : '') +
         '<div class="items' + (its.length > 6 ? ' two' : '') + '">' +
         its.map(function(x, k){
           var n = (k + 1) < 10 ? '0' + (k + 1) : (k + 1);
-          return '<div class="item step"><div class="idx">' + n + '</div><div>' +
-            '<h3>' + esc(x.h) + '</h3>' +
-            (x.p ? '<p>' + esc(x.p) + '</p>' : '') + '</div></div>'; }).join('') + '</div>' +
-        (s.band ? '<div class="band' + (s.bandKind ? ' ' + s.bandKind : '') + '">' + esc(s.band) + '</div>' : '');
+          return '<div class="item step"><div class="idx">' + n + '</div><div><h3>' +
+            esc(x.h) + '</h3>' + (x.p ? '<p>' + esc(x.p) + '</p>' : '') + '</div></div>';
+        }).join('') + '</div>' + band(s);
     }
     else if (t === 'table'){
       var al = s.align || [];
-      b = eyebrow(s) + '<h2>' + esc(s.t) + '</h2>' +
+      b = eb(s) + '<h2>' + esc(s.t) + '</h2>' +
         (s.sub ? '<div class="sub">' + esc(s.sub) + '</div>' : '') +
         '<div class="tbl"><table><thead><tr>' +
         (s.head || []).map(function(h, k){
           return '<th class="' + (al[k] || '') + '">' + esc(h) + '</th>'; }).join('') +
         '</tr></thead><tbody>' +
         (s.rows || []).map(function(r){
-          var cls = '';
-          var cells = r.slice();
-          if (cells[0] === '__tot'){ cls = 'tot'; cells[0] = '合計'; }
-          else if (String(cells[0]).indexOf('__hi|') === 0){
-            cls = 'hi'; cells[0] = String(cells[0]).slice(5); }
-          else if (String(cells[0]).indexOf('__dim|') === 0){
-            cls = 'dim'; cells[0] = String(cells[0]).slice(6); }
-          return '<tr class="step ' + cls + '">' + cells.map(function(c, k){
-            return '<td class="' + (al[k] || '') + '">' + esc(c) + '</td>'; }).join('') + '</tr>';
+          var cls = '', c = r.slice();
+          if (c[0] === '__tot'){ cls = 'tot'; c[0] = '合計'; }
+          else if (String(c[0]).indexOf('__hi|') === 0){ cls = 'hi'; c[0] = String(c[0]).slice(5); }
+          return '<tr class="step ' + cls + '">' + c.map(function(x, k){
+            return '<td class="' + (al[k] || '') + '">' + esc(x) + '</td>'; }).join('') + '</tr>';
         }).join('') + '</tbody></table>' +
-        (s.cap ? '<div class="cap">' + esc(s.cap) + '</div>' : '') + '</div>' +
-        (s.band ? '<div class="band' + (s.bandKind ? ' ' + s.bandKind : '') + '">' + esc(s.band) + '</div>' : '');
+        (s.cap ? '<div class="cap">' + esc(s.cap) + '</div>' : '') + '</div>' + band(s);
     }
     else if (t === 'quote'){
-      b = eyebrow(s) + '<h2>' + esc(s.t) + '</h2>' +
-        (s.sub ? '<div class="sub">' + esc(s.sub) + '</div>' : '') +
-        '<div class="cards n1" style="margin-top:26px"><div class="quote step">' +
-        esc(s.quote) + '</div></div>' +
+      b = eb(s) + '<h2>' + esc(s.t) + '</h2>' +
+        '<div class="cards n1" style="margin-top:26px"><div class="quote step">' + esc(s.quote) + '</div></div>' +
         (s.band ? '<div class="band step">' + esc(s.band) + '</div>' : '') +
         (s.after ? '<div class="band ok step">' + esc(s.after) + '</div>' : '');
     }
     else if (t === 'end'){
-      b = eyebrow(s) +
-        '<div style="flex:1;display:flex;flex-direction:column;justify-content:center">' +
+      b = eb(s) + '<div style="flex:1;display:flex;flex-direction:column;justify-content:center">' +
         '<div class="end-big">' + esc(s.big) + '</div>' +
         '<div class="end-sub">' + esc(s.sub) + '</div></div>' +
         (s.foot ? '<div class="cover-meta"><div>REPORT<b>' + esc(s.foot) + '</b></div></div>' : '');
@@ -195,7 +439,6 @@
     return '<section class="slide' + (s.dark ? ' dark' : '') + '" data-i="' + i + '">' + b + '</section>';
   }
 
-  /* ── 播放控制（桌機） ── */
   function slides(){ return $('deck').querySelectorAll('.slide'); }
   function stepsOf(el){ return Array.prototype.slice.call(el.querySelectorAll('.step')); }
 
@@ -235,25 +478,6 @@
   }
   function revealAll(){ var el = slides()[IDX]; STEP = stepsOf(el).length; paint(el, STEP); }
 
-  /* ── 總覽 ── */
-  function buildGrid(){
-    $('gridwrap').innerHTML = S.map(function(s, k){
-      var t = s.t || s.big || (s.letter ? '分段 ' + s.letter : '封面');
-      return '<div class="gcell" data-k="' + k + '"><div class="gn">' +
-        String(k + 1).padStart(2, '0') + '</div><div class="gt">' +
-        String(t).replace(/<br>/g, ' ') + '</div></div>'; }).join('');
-    Array.prototype.forEach.call($('gridwrap').children, function(c){
-      c.onclick = function(){ $('grid').classList.remove('on'); show(+c.dataset.k, true); };
-    });
-  }
-
-  /* ── 縮放 ── */
-  function fit(){
-    if (FLOW) return;
-    $('deck').style.transform = 'scale(' + Math.min(innerWidth / 1600, innerHeight / 900) + ')';
-  }
-
-  /* ── 計時 ── */
   var sec = 0, run = false, ct = null;
   function paintClock(){
     var m = Math.floor(sec / 60), s2 = sec % 60;
@@ -264,7 +488,6 @@
     if (run) ct = setInterval(function(){ sec++; paintClock(); }, 1000); else clearInterval(ct);
   }
 
-  /* ── 簡報者視窗 ── */
   var PW = null;
   window.__deckState = function(){
     var s = S[IDX] || {}, nx = S[IDX + 1] || null;
@@ -274,35 +497,24 @@
       steps:(s.items || []).map(function(c){ return { h:c.h || c.k || '', p:c.p || c.e || '' }; }),
       note:s.note || '',
       next:nx ? String(nx.t || nx.big || '').replace(/<br>/g, ' ') : '（最後一頁）',
-      org:M.org || '', date:M.date || '' };
+      org:M.org || '' };
   };
   window.__deckAll = function(){
     return S.map(function(s, i){
       return { no:i + 1, title:String(s.t || s.big || '').replace(/<br>/g, ' '),
         steps:(s.items || []).map(function(c){ return { h:c.h || c.k || '', p:c.p || c.e || '' }; }),
-        note:s.note || '' };
-    });
+        note:s.note || '' }; });
   };
   window.__deckGo = function(f){ (f === 'next' ? go(1) : go(-1)); };
 
-  function openPresenter(){
-    if (PW && !PW.closed){ PW.focus(); return; }
-    PW = window.open('', 'wzPresenter', 'width=1060,height=760');
-    if (!PW){ alert('瀏覽器擋掉了新視窗。\n請允許彈出式視窗後再按一次 P。'); return; }
-    PW.document.open(); PW.document.write(presDoc()); PW.document.close();
-  }
-
   function presDoc(){
-    var css =
-      "*{box-sizing:border-box;margin:0;padding:0}" +
-      "body{background:#0d0d11;color:#E8E8EF;font-family:'Noto Sans TC',sans-serif;" +
-        "height:100vh;display:flex;flex-direction:column;overflow:hidden}" +
+    var css = "*{box-sizing:border-box;margin:0;padding:0}" +
+      "body{background:#0d0d11;color:#E8E8EF;font-family:'Noto Sans TC',sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}" +
       ".hd{display:flex;align-items:center;gap:14px;padding:11px 18px;background:#15151b;border-bottom:2px solid #E30613}" +
-      ".hd .r{font-family:'Chakra Petch',monospace;font-weight:700;font-size:13px;letter-spacing:3px;color:#E30613}" +
+      ".hd .r{font-weight:700;font-size:13px;letter-spacing:3px;color:#E30613}" +
       ".hd .pg{font-family:monospace;font-size:14px;color:#8a8a92}" +
       ".hd .tm{margin-left:auto;font-family:monospace;font-size:26px;font-weight:700}" +
       ".hd button{background:#26262e;border:1px solid #3a3a44;color:#cfcfd6;border-radius:6px;padding:7px 13px;font-size:13px;cursor:pointer;font-family:inherit}" +
-      ".hd button:hover{border-color:#E30613;color:#fff}" +
       ".bd{flex:1;display:grid;grid-template-columns:1fr 1fr;min-height:0}" +
       ".col{padding:18px 22px;overflow-y:auto;min-height:0}" +
       ".col+.col{border-left:1px solid #26262e;background:#101015}" +
@@ -314,8 +526,7 @@
       ".st .n{font-family:monospace;font-size:12px;color:#E30613;font-weight:700}" +
       ".st h3{font-size:18px;font-weight:900;color:#fff;margin:2px 0 3px}" +
       ".st p{font-size:15px;color:#a8a8b4;line-height:1.65}" +
-      ".notes{font-size:19px;line-height:1.95;color:#F0F0F6;white-space:pre-wrap;background:#17171d;" +
-        "border:1px solid #2a2a33;border-left:4px solid #E30613;border-radius:8px;padding:15px 17px}" +
+      ".notes{font-size:19px;line-height:1.95;color:#F0F0F6;white-space:pre-wrap;background:#17171d;border:1px solid #2a2a33;border-left:4px solid #E30613;border-radius:8px;padding:15px 17px}" +
       ".notes.none{color:#55555e;font-size:15px;border-left-color:#33333d}" +
       ".nx{margin-top:18px;padding-top:14px;border-top:1px solid #26262e;font-size:15px;color:#8a8a92}" +
       ".nx b{color:#cfcfd6;display:block;font-size:17px;margin-top:4px}" +
@@ -324,66 +535,49 @@
       ".ft button.go{background:linear-gradient(135deg,#E30613,#8f0009)}" +
       ".dead{padding:40px;text-align:center;color:#8a8a92;font-size:16px;line-height:2}";
 
-    var js =
-      "var W=window.opener,T0=null,last='';" +
+    var js = "var W=window.opener,T0=null,last='';" +
       "function pad(n){return (n<10?'0':'')+n}" +
       "function tick(){if(!T0){document.getElementById('tm').textContent='00:00';return}" +
-        "var s=Math.floor((Date.now()-T0)/1000);document.getElementById('tm').textContent=pad(Math.floor(s/60))+':'+pad(s%60)}" +
+      "var s=Math.floor((Date.now()-T0)/1000);document.getElementById('tm').textContent=pad(Math.floor(s/60))+':'+pad(s%60)}" +
       "function toggleT(){T0=T0?null:Date.now();tick()}function resetT(){T0=Date.now();tick()}" +
       "function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}" +
-      "function draw(){if(!W||W.closed){document.getElementById('bd').innerHTML=" +
-        "'<div class=\"dead\">主視窗已經關掉了。<br>回到簡報視窗重新按一次 <b>P</b>。</div>';return}" +
-        "var d;try{d=W.__deckState()}catch(e){return}" +
-        "var key=d.idx+'/'+d.step;if(key===last)return;last=key;" +
-        "document.getElementById('rt').textContent='// '+d.org;" +
-        "document.getElementById('pg').textContent=(d.idx+1)+' / '+d.total;" +
-        "var h='<div class=\"lb\">現在這一頁</div><h1>'+esc(d.title)+'</h1>';" +
-        "if(d.lead)h+='<div class=\"lead\">'+esc(d.lead)+'</div>';" +
-        "d.steps.forEach(function(c,i){h+='<div class=\"st'+(i<d.step?' on':'')+'\"><div class=\"n\">'+" +
-        "(i+1<10?'0':'')+(i+1)+'</div><h3>'+esc(c.h)+'</h3>'+(c.p?'<p>'+esc(c.p)+'</p>':'')+'</div>'});" +
-        "if(!d.steps.length)h+='<div class=\"lead\">這頁沒有分格，直接講。</div>';" +
-        "document.getElementById('L').innerHTML=h;" +
-        "document.getElementById('R').innerHTML='<div class=\"lb\">講稿（只有你看得到）</div>'+" +
-        "(d.note?'<div class=\"notes\">'+esc(d.note)+'</div>':'<div class=\"notes none\">這頁沒有寫講稿。</div>')+" +
-        "'<div class=\"nx\">下一頁<b>'+esc(d.next)+'</b></div>'}" +
+      "function draw(){if(!W||W.closed){document.getElementById('bd').innerHTML='<div class=\\\"dead\\\">主視窗已關閉<br>回簡報視窗再按一次 P</div>';return}" +
+      "var d;try{d=W.__deckState()}catch(e){return}var key=d.idx+'/'+d.step;if(key===last)return;last=key;" +
+      "document.getElementById('rt').textContent='// '+d.org;" +
+      "document.getElementById('pg').textContent=(d.idx+1)+' / '+d.total;" +
+      "var h='<div class=\\\"lb\\\">現在這一頁</div><h1>'+esc(d.title)+'</h1>';" +
+      "if(d.lead)h+='<div class=\\\"lead\\\">'+esc(d.lead)+'</div>';" +
+      "d.steps.forEach(function(c,i){h+='<div class=\\\"st'+(i<d.step?' on':'')+'\\\"><div class=\\\"n\\\">'+(i+1<10?'0':'')+(i+1)+'</div><h3>'+esc(c.h)+'</h3>'+(c.p?'<p>'+esc(c.p)+'</p>':'')+'</div>'});" +
+      "if(!d.steps.length)h+='<div class=\\\"lead\\\">這頁沒有分格，直接講。</div>';" +
+      "document.getElementById('L').innerHTML=h;" +
+      "document.getElementById('R').innerHTML='<div class=\\\"lb\\\">講稿（只有你看得到）</div>'+(d.note?'<div class=\\\"notes\\\">'+esc(d.note)+'</div>':'<div class=\\\"notes none\\\">這頁沒有講稿。</div>')+'<div class=\\\"nx\\\">下一頁<b>'+esc(d.next)+'</b></div>'}" +
       "function go(f){try{W.__deckGo(f)}catch(e){}last='';draw()}" +
-      "function printAll(){var a;try{a=W.__deckAll()}catch(e){return}" +
-        "var h='<meta charset=\"UTF-8\"><title>講稿</title><style>@page{size:A4;margin:16mm}" +
-        "*{box-sizing:border-box;margin:0;padding:0}body{font-family:\"Microsoft JhengHei\",sans-serif;font-size:12px;color:#1a1a1a}" +
-        "h2{font-size:15px;border-bottom:2px solid #E30613;padding-bottom:4px;margin:0 0 7px}" +
-        ".pg{page-break-inside:avoid;margin-bottom:16px}.no{color:#E30613;font-family:monospace}" +
-        ".s{margin:4px 0 4px 12px}.s span{color:#555;display:block;font-size:11.5px}" +
-        ".nt{background:#f5f5f5;border-left:3px solid #E30613;padding:7px 9px;margin-top:6px;font-size:11.5px;line-height:1.7;white-space:pre-wrap}" +
-        ".pb{position:fixed;top:0;left:0;right:0;background:#1A1A1A;color:#fff;padding:9px 16px}" +
-        ".pb button{padding:7px 18px;border:none;border-radius:5px;background:#E30613;color:#fff;font-size:14px;font-weight:700;cursor:pointer}" +
-        "@media print{.pb,.sp{display:none}}</style>" +
-        "<div class=\"pb\"><button onclick=\"window.print()\">🖨 列印 / 存成 PDF</button></div><div class=\"sp\" style=\"height:44px\"></div>';" +
-        "a.forEach(function(s){h+='<div class=\"pg\"><h2><span class=\"no\">'+(s.no<10?'0':'')+s.no+'</span>　'+s.title+'</h2>';" +
-        "s.steps.forEach(function(c,i){h+='<div class=\"s\"><b>'+(i+1)+'. '+c.h+'</b>'+(c.p?'<span>'+c.p+'</span>':'')+'</div>'});" +
-        "if(s.note)h+='<div class=\"nt\">'+s.note+'</div>';h+='</div>'});" +
-        "var w=window.open('','_blank');w.document.open();w.document.write(h);w.document.close()}" +
-      "document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go('next')}" +
-        "else if(e.key==='ArrowLeft'){e.preventDefault();go('prev')}});" +
+      "document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go('next')}else if(e.key==='ArrowLeft'){e.preventDefault();go('prev')}});" +
       "setInterval(draw,180);setInterval(tick,1000);draw();tick();";
 
     return '<!DOCTYPE html><html lang="zh-TW"><head><meta charset="UTF-8"><title>簡報者視窗</title>' +
       '<style>' + css + '</style></head><body>' +
       '<div class="hd"><span class="r" id="rt">//</span><span class="pg" id="pg">— / —</span>' +
-      '<button onclick="printAll()">🖨 印出全部講稿</button>' +
       '<button onclick="resetT()">計時歸零</button><button onclick="toggleT()">開始 / 暫停</button>' +
       '<span class="tm" id="tm">00:00</span></div>' +
       '<div class="bd" id="bd"><div class="col" id="L"></div><div class="col" id="R"></div></div>' +
-      '<div class="ft"><button onclick="go(\'prev\')">‹ 上一步</button>' +
-      '<button class="go" onclick="go(\'next\')">下一步 ›</button></div>' +
-      '<script>' + js + '<\/script></body></html>';
+      '<div class="ft"><button onclick="go(\'prev\')">上一步</button>' +
+      '<button class="go" onclick="go(\'next\')">下一步</button></div>' +
+      '<scr' + 'ipt>' + js + '</scr' + 'ipt></body></html>';
   }
 
-  /* ── 手機瀑布流 ── */
+  function openPresenter(){
+    if (PW && !PW.closed){ PW.focus(); return; }
+    PW = window.open('', 'wzPresenter', 'width=1060,height=760');
+    if (!PW){ alert('瀏覽器擋掉了新視窗，請允許彈出式視窗後再按一次 P。'); return; }
+    PW.document.open(); PW.document.write(presDoc()); PW.document.close();
+  }
+
   function enterFlow(){
     FLOW = true;
     document.body.classList.add('flow');
     $('deck').style.transform = '';
-    slides().forEach(function(el){
+    Array.prototype.forEach.call(slides(), function(el){
       el.classList.add('on', 'play');
       stepsOf(el).forEach(function(x){ x.classList.add('shown'); });
     });
@@ -391,27 +585,35 @@
     function onScroll(){
       var h = document.documentElement.scrollHeight - innerHeight;
       fp.style.width = (h > 0 ? scrollY / h * 100 : 0) + '%';
-      tt.classList.toggle('on', scrollY > innerHeight * .8);
+      tt.classList.toggle('on', scrollY > innerHeight * 0.8);
     }
-    addEventListener('scroll', onScroll, {passive:true});
+    addEventListener('scroll', onScroll, { passive:true });
     tt.onclick = function(){ scrollTo({ top:0, behavior:'smooth' }); };
     onScroll();
   }
 
-  /* ── 啟動 ── */
-  build();
-  buildGrid();
+  /* 啟動 */
+  document.title = (M.title || '簡報') + '｜' + (M.org || '');
+  $('deck').innerHTML = S.map(slideHtml).join('');
+  $('tot').textContent = S.length;
+  $('gridwrap').innerHTML = S.map(function(s, k){
+    var t = s.t || s.big || (s.letter ? '分段 ' + s.letter : '封面');
+    return '<div class="gcell" data-k="' + k + '"><div class="gn">' +
+      ('0' + (k + 1)).slice(-2) + '</div><div class="gt">' +
+      String(t).replace(/<br>/g, ' ') + '</div></div>'; }).join('');
+  Array.prototype.forEach.call($('gridwrap').children, function(c){
+    c.onclick = function(){ $('grid').classList.remove('on'); show(+c.getAttribute('data-k'), true); };
+  });
 
-  if (isFlow()){ enterFlow(); }
-  else {
-    fit(); show(0, false);
-    addEventListener('resize', function(){
-      if (isFlow() && !FLOW){ location.reload(); return; }
-      fit();
-    });
+  if (isFlow()){
+    enterFlow();
+  } else {
+    function fit(){ $('deck').style.transform = 'scale(' + Math.min(innerWidth / 1600, innerHeight / 900) + ')'; }
+    fit(); show(0, false); paintClock();
+    addEventListener('resize', function(){ if (!FLOW) fit(); });
     $('prev').onclick = function(){ go(-1); };
     $('next').onclick = function(){ go(1); };
-    $('clock').onclick = toggleClock; paintClock();
+    $('clock').onclick = toggleClock;
     document.addEventListener('keydown', function(e){
       var k = e.key;
       if (k === 'Escape'){ $('grid').classList.remove('on'); return; }
